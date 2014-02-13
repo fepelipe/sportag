@@ -28,7 +28,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="br.ufam.sportag.MainActivity"
+            android:name="br.ufam.sportag.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,8 +37,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.ufam.sportag.MapActivity"
-            android:label="@string/title_activity_map">
+            android:name="br.ufam.sportag.activity.MapActivity"
+            android:label="@string/title_activity_map" >
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.activity.ProfileActivity"
+            android:label="@string/title_activity_profile" >
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.activity.EventActivity"
+            android:label="@string/title_activity_event" >
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.activity.EventDiscussionActivity"
+            android:label="@string/title_activity_event_discussion" >
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.activity.FriendsActivity"
+            android:label="@string/title_activity_friends" >
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.FriendChatActivity"
+            android:label="@string/title_activity_friend_chat" >
         </activity>
     </application>
 

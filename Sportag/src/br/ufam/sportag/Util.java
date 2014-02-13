@@ -35,6 +35,8 @@ public class Util {
 
 	public User createUser(JSONObject jsonUser) throws JSONException {
 
+		JSONObject photo = jsonUser.getJSONObject("photo");
+		
 		Integer id = jsonUser.optInt("id");
 		String firstName = jsonUser.optString("firstName");
 		String lastName = jsonUser.optString("lastName");
@@ -42,8 +44,8 @@ public class Util {
 		String relationship = jsonUser.optString("relationship");
 		String homeCity = jsonUser.optString("homeCity");
 		String bio = jsonUser.optString("bio");
-		String photoURL = jsonUser.optString("prefix") + "36x36"
-				+ jsonUser.optString("suffix");
+		String photoURL = photo.optString("prefix") + "36x36"
+				+ photo.optString("suffix");
 
 		User newUser = new User();
 

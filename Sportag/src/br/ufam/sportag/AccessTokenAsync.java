@@ -35,7 +35,7 @@ public class AccessTokenAsync extends AsyncTask<Void, Void, Void> {
 		try {
 			Log.d("Token", "Request started!");
 
-			final URL url = new URL(tokenUrl + "&code=" + code);
+			final URL url = new URL(tokenUrl + "&code=" + code + "&v=20140212");
 			final HttpURLConnection urlConnection = (HttpURLConnection) url
 					.openConnection();
 			urlConnection.setRequestMethod("GET");

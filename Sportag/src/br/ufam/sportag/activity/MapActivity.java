@@ -1,4 +1,4 @@
-package br.ufam.sportag;
+package br.ufam.sportag.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -6,6 +6,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
+import br.ufam.sportag.R;
+import br.ufam.sportag.R.id;
+import br.ufam.sportag.R.layout;
+import br.ufam.sportag.R.menu;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;

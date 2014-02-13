@@ -31,7 +31,7 @@ public class UserRegisterAsync extends AsyncTask<Void, Void, Void> {
 		try {
 			Log.d("User Register", "Request started!");
 
-			final URL userRequestUrl = new URL (selfDataRequestUrl + "?oauth_token=" + token);
+			final URL userRequestUrl = new URL (selfDataRequestUrl + "?oauth_token=" + token + "&v=20140212");
 			final HttpURLConnection userRequestConnection = (HttpURLConnection) userRequestUrl
 					.openConnection();
 			userRequestConnection.setRequestMethod("GET");
@@ -42,6 +42,8 @@ public class UserRegisterAsync extends AsyncTask<Void, Void, Void> {
 			Log.d("Self Data Response", requestResponse);
 
 			User self = util.getUser(requestResponse);
+			
+			Log.i("Self", self.firstName + " " + self.photoURL + " " + self.id);
 			
 			final URL selfRegisterUrl = new URL(userRegisterUrl + "?nome=" + self.firstName
 					+ "&foto=" + self.photoURL + "&id_foursquare=" + self.id);

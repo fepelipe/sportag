@@ -1,12 +1,19 @@
-package br.ufam.sportag;
+package br.ufam.sportag.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import br.ufam.sportag.AccessTokenAsync;
+import br.ufam.sportag.R;
+import br.ufam.sportag.RegisterResponse;
+import br.ufam.sportag.UserRegisterAsync;
+import br.ufam.sportag.R.layout;
+import br.ufam.sportag.R.menu;
 
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
@@ -76,6 +83,9 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 	@Override
 	public void tokenReceived(String token) {
+		ProgressDialog dialog = ProgressDialog.show(this, "", 
+                "Carregando...", true);
+		
 		SharedPreferences strings = getSharedPreferences("strings",
 				MODE_PRIVATE);
 		SharedPreferences.Editor editor = strings.edit();
