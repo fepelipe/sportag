@@ -31,6 +31,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:inputType="textMultiLine" 
+        android:maxLines="4"
         android:layout_toLeftOf="@+id/btn_eventMessageSend"
         android:ems="10" />
 
