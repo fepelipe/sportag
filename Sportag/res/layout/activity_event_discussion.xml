@@ -12,33 +12,26 @@
         android:id="@+id/list_eventMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/layout_eventBottom" >
+        android:layout_above="@+id/btn_eventMessageSend" >
     </ListView>
 
-    <RelativeLayout
-        android:id="@id/layout_eventBottom"
+    <Button
+        android:id="@+id/btn_eventMessageSend"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="@string/btn_send" />
+
+    <EditText
+        android:id="@+id/edit_eventMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:gravity="bottom" >
-
-        <EditText
-            android:id="@+id/edit_eventMessage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:maxLines="4" />
-
-        <Button
-            android:id="@+id/btn_eventMessageSend"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@id/edit_eventMessage"
-            android:layout_toRightOf="@id/edit_eventMessage"
-            android:text="@string/btn_send" />
-    </RelativeLayout>
+        android:inputType="textMultiLine" 
+        android:layout_toLeftOf="@+id/btn_eventMessageSend"
+        android:ems="10" />
 
 </RelativeLayout>
