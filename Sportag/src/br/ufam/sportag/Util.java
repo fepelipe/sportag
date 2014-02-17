@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import br.ufam.sportag.model.User;
+
 public class Util {
 
 	// Resposta JSON fake para requisição HTTP de amigos.
@@ -56,7 +58,7 @@ public class Util {
 		newUser.relationship = relationship;
 		newUser.homeCity = homeCity;
 		newUser.bio = bio;
-		newUser.photoURL = photoURL;
+		newUser.photoPrefix = photoURL;
 
 		return newUser;
 	}

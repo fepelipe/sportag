@@ -46,19 +46,23 @@
         </activity>
         <activity
             android:name="br.ufam.sportag.activity.EventActivity"
-            android:label="@string/title_activity_event" >
+            android:label="@string/title_activity_event"
+            android:parentActivityName="br.ufam.sportag.activity.MapActivity" >
         </activity>
         <activity
             android:name="br.ufam.sportag.activity.EventDiscussionActivity"
-            android:label="@string/title_activity_event_discussion" >
+            android:label="@string/title_activity_event_discussion"
+            android:parentActivityName="br.ufam.sportag.activity.EventActivity" >
         </activity>
         <activity
             android:name="br.ufam.sportag.activity.FriendsActivity"
-            android:label="@string/title_activity_friends" >
+            android:label="@string/title_activity_friends" 
+            android:parentActivityName="br.ufam.sportag.activity.MapActivity">
         </activity>
         <activity
             android:name="br.ufam.sportag.FriendChatActivity"
-            android:label="@string/title_activity_friend_chat" >
+            android:label="@string/title_activity_friend_chat" 
+            android:parentActivityName="br.ufam.sportag.activity.FriendsActivity">
         </activity>
     </application>
 

@@ -3,12 +3,26 @@
 
     <string name="app_name">Sportag</string>
     <string name="action_settings">Settings</string>
+    <string name="action_events">Meus Eventos</string>
+    <string name="action_friends">Mensagens</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">Mapa</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_event">EventActivity</string>
-    <string name="title_activity_event_discussion">EventDiscussionActivity</string>
-    <string name="title_activity_friends">FriendsActivity</string>
-    <string name="title_activity_friend_chat">FriendChatActivity</string>
+    <string name="title_activity_profile">Perfil</string>
+    <string name="title_activity_event">Eventos</string>
+    <string name="title_activity_event_discussion">Discussão</string>
+    <string name="title_activity_friends">Mensagens</string>
+    <string name="title_activity_friend_chat">Mensagens</string>
+
+    <!-- Profile -->
+    <string name="tv_profile_name">Nome</string>
+    <string name="tv_profile_pref">Esportes preferidos</string>
+    <string name="btn_profileMoreSports">&#8230;</string>
+    <string name="btn_send">Enviar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="eventName">Nome do Evento</string>
+    <string name="eventPrivacy">Privado</string>
+    <string name="eventAddress">Endereço</string>
+    <string name="eventDate">Data</string>
+    <string name="btn_eventDiscussion">Ver Discussão</string>
 
 </resources>

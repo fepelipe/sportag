@@ -1,4 +1,4 @@
-package br.ufam.sportag;
+package br.ufam.sportag.asynctask;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -7,6 +7,9 @@ import java.net.URL;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import br.ufam.sportag.RegisterResponse;
+import br.ufam.sportag.Util;
 
 import android.content.Context;
 import android.os.AsyncTask;

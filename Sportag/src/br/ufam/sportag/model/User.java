@@ -1,4 +1,4 @@
-package br.ufam.sportag;
+package br.ufam.sportag.model;
 
 public class User {
 	
@@ -58,12 +58,20 @@ public class User {
 		this.bio = bio;
 	}
 
-	public String getPhotoURL() {
-		return photoURL;
+	public String getPhotoPrefix() {
+		return photoPrefix;
 	}
 
-	public void setPhotoURL(String photoURL) {
-		this.photoURL = photoURL;
+	public void setPhotoPrefix(String photoPrefix) {
+		this.photoPrefix = photoPrefix;
+	}
+
+	public String getPhotoSuffix() {
+		return photoSuffix;
+	}
+
+	public void setPhotoSuffix(String photoSuffix) {
+		this.photoSuffix = photoSuffix;
 	}
 
 	public String toString() {
@@ -77,8 +85,9 @@ public class User {
 	public String relationship;
 	public String homeCity;
 	public String bio;
-	public String photoURL;
-	
+	public String photoPrefix;
+	public String photoSuffix;
+
 }
 
 

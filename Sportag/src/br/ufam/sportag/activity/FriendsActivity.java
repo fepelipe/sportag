@@ -1,11 +1,9 @@
 package br.ufam.sportag.activity;
 
-import br.ufam.sportag.R;
-import br.ufam.sportag.R.layout;
-import br.ufam.sportag.R.menu;
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
+import br.ufam.sportag.R;
 
 public class FriendsActivity extends Activity {
 
@@ -13,6 +11,7 @@ public class FriendsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friends);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override

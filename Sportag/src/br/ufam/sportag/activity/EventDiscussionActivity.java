@@ -1,11 +1,11 @@
 package br.ufam.sportag.activity;
 
-import br.ufam.sportag.R;
-import br.ufam.sportag.R.layout;
-import br.ufam.sportag.R.menu;
-import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import br.ufam.sportag.R;
 
 public class EventDiscussionActivity extends Activity {
 
@@ -13,6 +13,7 @@ public class EventDiscussionActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_discussion);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -21,5 +22,4 @@ public class EventDiscussionActivity extends Activity {
 		getMenuInflater().inflate(R.menu.event_discussion, menu);
 		return true;
 	}
-
 }

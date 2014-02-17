@@ -8,9 +8,49 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ProfileActivity" >
 
+    <ImageView
+        android:id="@+id/img_profile_pic"
+        android:layout_width="@dimen/img_profile_dimen"
+        android:layout_height="@dimen/img_profile_dimen"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop" />
+
     <TextView
+        android:id="@+id/tv_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignLeft="@+id/img_profile_pic"
+        android:layout_below="@+id/img_profile_pic"
+        android:layout_marginTop="@dimen/tv_profileName_margin"
+        android:text="@string/tv_profile_name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/tv_profile_pref"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_profile_name"
+        android:layout_below="@+id/tv_profile_name"
+        android:layout_marginTop="@dimen/tv_profilePref_margin"
+        android:text="@string/tv_profile_pref" />
+
+    <GridLayout
+        android:id="@+id/layout_profileSports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tv_profile_pref"
+        android:layout_below="@+id/tv_profile_pref"
+        android:layout_marginTop="@dimen/layout_profileSports_margin" >
+
+        <Button
+            android:id="@+id/btn_profileMoreSports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_profileMoreSports"
+            android:visibility="invisible"/>
+
+    </GridLayout>
 
 </RelativeLayout>

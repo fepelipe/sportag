@@ -1,19 +1,16 @@
 package br.ufam.sportag.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import br.ufam.sportag.AccessTokenAsync;
 import br.ufam.sportag.R;
 import br.ufam.sportag.RegisterResponse;
-import br.ufam.sportag.UserRegisterAsync;
-import br.ufam.sportag.R.layout;
-import br.ufam.sportag.R.menu;
+import br.ufam.sportag.asynctask.AccessTokenAsync;
+import br.ufam.sportag.asynctask.UserRegisterAsync;
 
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
@@ -26,11 +23,14 @@ public class MainActivity extends Activity implements RegisterResponse {
 	private static final int REQUEST_CODE_FSQ_CONNECT = 200;
 	private static final String CLIENT_ID = "2WDE5IGFUJ2SUTOOS0MFTAZHQQFRZ0WOUDT2FKXWEQIDCF5U";
 	private static final String CLIENT_SECRET = "SFOGBEQSUQIOG212M1YJVCRIXP4CA0SJUA5CWEQV1LTOBW1E";
-
+	private SharedPreferences strings;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		strings = getSharedPreferences("strings", MODE_PRIVATE);
 
 		// TOKEN: Verificação inicial
 		SharedPreferences strings = getSharedPreferences("strings",
@@ -40,15 +40,8 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 		// Se houver um Token, ele vai direto para FriendsActivity.
 		if (token != "null") {
-			Intent intent = new Intent(this, MapActivity.class);
-			startActivity(intent);
+			callMapActivity();
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
 	}
 
 	// Se não houver token, pode-se fazer a request de um token em AccessToken
@@ -83,11 +76,7 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 	@Override
 	public void tokenReceived(String token) {
-		ProgressDialog dialog = ProgressDialog.show(this, "", 
-                "Carregando...", true);
-		
-		SharedPreferences strings = getSharedPreferences("strings",
-				MODE_PRIVATE);
+
 		SharedPreferences.Editor editor = strings.edit();
 		editor.putString("token", token);
 		editor.commit();
@@ -97,10 +86,31 @@ public class MainActivity extends Activity implements RegisterResponse {
 		userRegister.delegate = this;
 		userRegister.execute();
 	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
 	
 	@Override
-	public void registerSuccess() {
+	public void registerSuccess(String userFirstName) {
+		SharedPreferences.Editor editor = strings.edit();
+		editor.putString("userFirstName", userFirstName);
+		editor.commit();
+		Log.i("First Name Armazenado", userFirstName);
+		callMapActivity();
+	}
+
+	private void callMapActivity() {
 		Intent intent = new Intent(this, MapActivity.class);
 		startActivity(intent);
+		this.finish();
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+
 }

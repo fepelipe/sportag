@@ -8,6 +8,34 @@
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_filters" />
+
+    <LinearLayout
+        android:id="@id/layout_filters"
+        style="@android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/btn_filter_event"
+            style="@android:attr/buttonBarButtonStyle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="callEventFilter"
+            android:text="Eventos" />
+
+        <Button
+            android:id="@+id/btn_filter_user"
+            style="@android:attr/buttonBarButtonStyle"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="callUserFilter"
+            android:text="Esportistas" />
+    </LinearLayout>
 
 </RelativeLayout>

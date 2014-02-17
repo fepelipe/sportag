@@ -4,4 +4,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Profile -->
+    <dimen name="img_profile_dimen">100dp</dimen>
+    <dimen name="tv_profileName_margin">12dp</dimen>
+    <dimen name="tv_profilePref_margin">22dp</dimen>
+    <dimen name="layout_profileSports_margin">12dp</dimen>
+
+    <!-- Event Details -->
+    <dimen name="map_eventLocation_height">160dp</dimen>
+    <dimen name="layout_eventAttendants_margin">12dp</dimen>
+    <dimen name="tv_eventTitle_marginTop">22dp</dimen>
+    <dimen name="tv_eventDetails_marginTop">12dp</dimen>
+
 </resources>
