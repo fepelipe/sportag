@@ -1,5 +1,7 @@
 package br.ufam.sportag.activity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,9 +11,8 @@ import android.view.Menu;
 import android.view.View;
 import br.ufam.sportag.R;
 import br.ufam.sportag.RegisterResponse;
-import br.ufam.sportag.asynctask.AccessTokenAsync;
-import br.ufam.sportag.asynctask.UserRegisterAsync;
-
+import br.ufam.sportag.asynctask.HttpWebRequest;
+import br.ufam.sportag.asynctask.UserService;
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
@@ -32,7 +33,7 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 		strings = getSharedPreferences("strings", MODE_PRIVATE);
 
-		// TOKEN: Verificação inicial
+		// TOKEN: VerificaÁ„o nicial
 		SharedPreferences strings = getSharedPreferences("strings",
 				MODE_PRIVATE);
 		token = strings.getString("token", "null");
@@ -44,8 +45,8 @@ public class MainActivity extends Activity implements RegisterResponse {
 		}
 	}
 
-	// Se não houver token, pode-se fazer a request de um token em AccessToken
-	// Esse é o método chamado ao apertar o botão "Iniciar autenticação"
+	// Se n„o houver token, pode-se fazer a request de um token em AccessToken
+	// Esse È o mÈtodo chamado ao apertar o bot„o "Iniciar autenticaÁ„o"
 	public void foursquareAuth(View view) {
 		Intent intent = FoursquareOAuth.getConnectIntent(this, CLIENT_ID);
 		if (!FoursquareOAuth.isPlayStoreIntent(intent)) {
@@ -65,11 +66,31 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 			tokenUrl = "https://foursquare.com/oauth2/access_token"
 					+ "?client_id=" + CLIENT_ID + "&client_secret="
-					+ CLIENT_SECRET + "&grant_type=authorization_code";
-			AccessTokenAsync accessToken = new AccessTokenAsync(this, code,
-					tokenUrl);
-			accessToken.delegate = this;
-			accessToken.execute();
+					+ CLIENT_SECRET + "&grant_type=authorization_code"
+					+ "&code=" + code + "&v=20140212";
+			
+			HttpWebRequest tokenRequest = new HttpWebRequest(this, tokenUrl)
+			{
+				@Override
+				public void onSuccess(String tokenString)
+				{
+					JSONObject jsonObj;
+					try
+					{
+						jsonObj = new JSONObject(tokenString);
+						token = jsonObj.optString("access_token");	
+						tokenReceived(token);
+						
+					} catch (JSONException jsonExcep)
+					{
+						Log.e("Erro", "JSON", jsonExcep);
+					}
+									
+				}
+			}; 
+			
+			tokenRequest.execute();
+
 			break;
 		}
 	}
@@ -82,9 +103,15 @@ public class MainActivity extends Activity implements RegisterResponse {
 		editor.commit();
 		Log.i("Token Armazenado", token);
 
-		UserRegisterAsync userRegister = new UserRegisterAsync(this, token);
-		userRegister.delegate = this;
-		userRegister.execute();
+		UserService userRegister = new UserService(this, token)
+		{
+			public void onSuccess(String firstName)
+			{
+				registerSuccess(firstName);
+			}
+		};
+		
+		userRegister.startService();
 	}
 
 	@Override
