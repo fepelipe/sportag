@@ -16,8 +16,4 @@
     <dimen name="tv_eventTitle_marginTop">22dp</dimen>
     <dimen name="tv_eventDetails_marginTop">12dp</dimen>
 
-    <!-- Message -->
-    <dimen name="tv_message_marginTop">2dp</dimen>
-    <dimen name="tv_message_padding">6dp</dimen>
-    
 </resources>
