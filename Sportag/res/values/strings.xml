@@ -25,4 +25,16 @@
     <string name="eventDate">Data</string>
     <string name="btn_eventDiscussion">Ver Discussão</string>
 
+    <string-array name="sports_array">
+        <item>Futebol</item>
+        <item>Vôlei</item>
+        <item>Handebol</item>
+        <item>Basquete</item>
+        <item>Natação</item>
+        <item>Corrida</item>
+        <item>Caminhada</item>
+        <item>Skate</item>
+        <item>Patinação</item>
+    </string-array>
+
 </resources>
