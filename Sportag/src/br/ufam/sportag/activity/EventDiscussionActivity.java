@@ -42,12 +42,12 @@ public class EventDiscussionActivity extends Activity {
 		ArrayList<Comentario> listaComentarios = new ArrayList<Comentario>()
 		{{
 			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Vamo tentar na ponta negra?"); setUsuario(user1);  }});
-			add(new Comentario() {{ setDateTime(new Date()); setConteudo("N„o sei, ouvi dizer que ia chover."); setUsuario(user2);  }});
-			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Vai n„o, pÙ!"); setUsuario(user1);  }});
-			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Como vocÍ sabe?"); setUsuario(user2);  }});
-			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Ah, eu olhei na previs„o do tempo!"); setUsuario(user1);  }});
+			add(new Comentario() {{ setDateTime(new Date()); setConteudo("N√£o sei, ouvi dizer que ia chover."); setUsuario(user2);  }});
+			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Vai n√£o, p√¥!"); setUsuario(user1);  }});
+			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Como voc√™ sabe?"); setUsuario(user2);  }});
+			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Ah, eu olhei na previs√£o do tempo!"); setUsuario(user1);  }});
 			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Beleza, chama o Fulano 3, ele joga bem!"); setUsuario(user2);  }});
-			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Pode deixar ent„o!"); setUsuario(user1);  }});
+			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Pode deixar ent√£o!"); setUsuario(user1);  }});
 			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Fechou!"); setUsuario(user2);  }});
 		}};
 		
