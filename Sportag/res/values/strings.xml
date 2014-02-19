@@ -4,13 +4,13 @@
     <string name="app_name">Sportag</string>
     <string name="action_settings">Settings</string>
     <string name="action_events">Meus Eventos</string>
-    <string name="action_friends">Mensagens</string>
+    <string name="action_friends">Amigos</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">Mapa</string>
     <string name="title_activity_profile">Perfil</string>
     <string name="title_activity_event">Eventos</string>
     <string name="title_activity_event_discussion">Discussão</string>
-    <string name="title_activity_friends">Mensagens</string>
+    <string name="title_activity_friends">Amigos</string>
     <string name="title_activity_friend_chat">Mensagens</string>
 
     <!-- Profile -->
