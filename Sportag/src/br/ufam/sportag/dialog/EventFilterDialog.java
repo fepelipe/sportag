@@ -13,7 +13,7 @@ public class EventFilterDialog extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Filtre os resultados")
+		builder.setTitle("Filtre Eventos por esporte")
 				.setNegativeButton("Limpar Filtro", new OnClickListener() {
 
 					@Override

@@ -1,13 +1,10 @@
 package br.ufam.sportag.activity;
 
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,7 +17,6 @@ import br.ufam.sportag.dialog.UserFilterDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -43,7 +39,7 @@ public class MapActivity extends Activity {
 
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				if (marker.getSnippet().equals("Usuário")) {
+				if (marker.getSnippet().equals("UsuÔøΩrio")) {
 					Intent intent = new Intent(getApplicationContext(),
 							ProfileActivity.class);
 					startActivity(intent);
@@ -54,9 +50,9 @@ public class MapActivity extends Activity {
 				}
 			}
 		});
-		
-		addSelfMarker();
+
 		addEventsMarker();
+//		addSelfMarker();
 	}
 
 	private void addEventsMarker() {
@@ -65,7 +61,7 @@ public class MapActivity extends Activity {
 		map.addMarker(new MarkerOptions().position(
 				new LatLng(-3.102331, -60.025342)).title("Sk8 dos Brow"));
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.130390, -60.023165)).title("Amigo Coração"));
+				new LatLng(-3.130390, -60.023165)).title("Amigo CoraÔøΩÔøΩo"));
 		map.addMarker(new MarkerOptions().position(
 				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo"));
 		map.addMarker(new MarkerOptions().position(
@@ -87,7 +83,7 @@ public class MapActivity extends Activity {
 
 		map.addMarker(new MarkerOptions()
 				.title(strings.getString("userFirstName", "User"))
-				.snippet("Usuário").position(userLocation));
+				.snippet("UsuÔøΩrio").position(userLocation));
 	}
 
 	@Override
