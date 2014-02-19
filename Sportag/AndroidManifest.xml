@@ -60,7 +60,7 @@
             android:parentActivityName="br.ufam.sportag.activity.MapActivity" >
         </activity>
         <activity
-            android:name="br.ufam.sportag.FriendChatActivity"
+            android:name="br.ufam.sportag.activity.FriendChatActivity"
             android:label="@string/title_activity_friend_chat"
             android:parentActivityName="br.ufam.sportag.activity.FriendsActivity" >
         </activity>

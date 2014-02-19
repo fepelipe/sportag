@@ -8,7 +8,17 @@ public class Mensagem
 	private int id;
 	private Date dataHora;
 	private String conteudo;
-	private Chat chat;
+	private Usuario usuario;
+	
+	public Usuario getUsuario()
+	{
+		return usuario;
+	}
+	
+	public void setUsuario(Usuario usuario)
+	{
+		this.usuario = usuario;
+	}
 	
 	public int getId()
 	{
@@ -38,16 +48,6 @@ public class Mensagem
 	public void setConteudo(String conteudo)
 	{
 		this.conteudo = conteudo;
-	}
-	
-	public Chat getChat()
-	{
-		return chat;
-	}
-	
-	public void setChat(Chat chat)
-	{
-		this.chat = chat;
 	}
 	
 }

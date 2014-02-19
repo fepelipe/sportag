@@ -1,8 +1,10 @@
 package br.ufam.sportag.activity;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.TextView;
 import br.ufam.sportag.R;
 
 public class ProfileActivity extends Activity {
@@ -12,6 +14,15 @@ public class ProfileActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		setFakeLabels();
+	}
+
+	private void setFakeLabels()
+	{
+		SharedPreferences strings = getSharedPreferences("strings", MODE_PRIVATE);
+		String firstName = strings.getString("userFirstName", "Unknow name");		
+		((TextView)findViewById(R.id.tv_profile_name)).setText(firstName);
 	}
 
 	@Override
