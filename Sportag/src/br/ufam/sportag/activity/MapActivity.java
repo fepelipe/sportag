@@ -1,5 +1,7 @@
 package br.ufam.sportag.activity;
 
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +20,7 @@ import br.ufam.sportag.dialog.UserFilterDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -32,9 +35,41 @@ public class MapActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		
+		map = ((MapFragment) getFragmentManager().findFragmentById(
+				R.id.map_fragment)).getMap();
 
-		strings = getSharedPreferences("strings", MODE_PRIVATE);
+		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+
+			@Override
+			public void onInfoWindowClick(Marker marker) {
+				if (marker.getSnippet().equals("Usuário")) {
+					Intent intent = new Intent(getApplicationContext(),
+							ProfileActivity.class);
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(getApplicationContext(),
+							EventActivity.class);
+					startActivity(intent);
+				}
+			}
+		});
+		
 		addSelfMarker();
+		addEventsMarker();
+	}
+
+	private void addEventsMarker() {
+		map.addMarker(new MarkerOptions().position(
+				new LatLng(-3.045086, -60.085949)).title("Runners"));
+		map.addMarker(new MarkerOptions().position(
+				new LatLng(-3.102331, -60.025342)).title("Sk8 dos Brow"));
+		map.addMarker(new MarkerOptions().position(
+				new LatLng(-3.130390, -60.023165)).title("Amigo Coração"));
+		map.addMarker(new MarkerOptions().position(
+				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo"));
+		map.addMarker(new MarkerOptions().position(
+				new LatLng(-3.067638, -60.095109)).title("Pedala Galera"));
 	}
 
 	private void addSelfMarker() {
@@ -47,25 +82,12 @@ public class MapActivity extends Activity {
 
 		userLocation = new LatLng(userLatitude, userLongitude);
 
-		map = ((MapFragment) getFragmentManager().findFragmentById(
-				R.id.map_fragment)).getMap();
 		map.setMyLocationEnabled(true);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,
-				14));
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
 
 		map.addMarker(new MarkerOptions()
 				.title(strings.getString("userFirstName", "User"))
-				.snippet("Você está aqui").position(userLocation));
-		
-		map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
-
-			@Override
-			public void onInfoWindowClick(Marker marker) {
-				Intent intent = new Intent(getApplicationContext(),
-						ProfileActivity.class);
-				startActivity(intent);
-			}
-		});
+				.snippet("Usuário").position(userLocation));
 	}
 
 	@Override
@@ -97,12 +119,12 @@ public class MapActivity extends Activity {
 		Intent intent = new Intent(this, FriendsActivity.class);
 		startActivity(intent);
 	}
-	
+
 	public void callEventFilter(View view) {
 		EventFilterDialog filterDialog = new EventFilterDialog();
 		filterDialog.show(getFragmentManager(), "event_filter");
 	}
-	
+
 	public void callUserFilter(View view) {
 		UserFilterDialog filterDialog = new UserFilterDialog();
 		filterDialog.show(getFragmentManager(), "event_filter");

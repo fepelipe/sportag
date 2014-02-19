@@ -1,4 +1,3 @@
-
 package br.ufam.sportag.asynctask;
 
 import java.util.HashMap;
@@ -10,49 +9,40 @@ import android.util.Log;
 import br.ufam.sportag.Util;
 import br.ufam.sportag.model.User;
 
-public abstract class UserService
-{
+public abstract class UserService {
 	private Context context;
 	private String token;
-	
-	public UserService(Context context, String token)
-	{
+
+	public UserService(Context context, String token) {
 		this.context = context;
 		this.token = token;
 	}
-	
-	public void onError(String firstName)
-	{
+
+	public void onError(String firstName) {
 		Log.e("Erro - Servidor Sportag", firstName);
 	}
-	
+
 	public abstract void onSuccess(String paramString);
-	
-	public void startService()
-	{
-		String str = Util.selfDataRequestUrl + "?oauth_token=" + this.token + "&v=20140212";
-		HttpWebRequest selfDataRequest = new HttpWebRequest(this.context, str)
-		{
-			public void onSuccess(String jsonResponseString)
-			{
+
+	public void startService() {
+		String str = Util.selfDataRequestUrl + "?oauth_token=" + this.token
+				+ "&v=20140212";
+		HttpWebRequest selfDataRequest = new HttpWebRequest(this.context, str) {
+			public void onSuccess(String jsonResponseString) {
 				Util localUtil = new Util();
-				try
-				{
+				try {
 					selfRegister(localUtil.getUser(jsonResponseString));
-				} catch (JSONException localJSONException)
-				{
+				} catch (JSONException localJSONException) {
 					Log.d("ErroJSON", "Erro", localJSONException);
 				}
 			}
 		};
-		
+
 		selfDataRequest.execute();
 	}
-	
-	private void selfRegister(final User userObj)
-	{
-		HashMap<String, Object> args = new HashMap<String, Object>()
-		{
+
+	private void selfRegister(final User userObj) {
+		HashMap<String, Object> args = new HashMap<String, Object>() {
 			{
 				put("type", "usuario");
 				put("nome", userObj.firstName);
@@ -61,31 +51,26 @@ public abstract class UserService
 				put("id_foursquare", userObj.id);
 			}
 		};
-		
+
 		String str = Util.userRegisterUrl + Util.dictionaryToString(args);
-		HttpWebRequest registerUserRequest = new HttpWebRequest(UserService.this.context, str)
-		{
-			public void onSuccess(String response)
-			{
+		HttpWebRequest registerUserRequest = new HttpWebRequest(
+				UserService.this.context, str) {
+			public void onSuccess(String response) {
 				JSONObject jsonObj;
-				try
-				{
+				try {
 					jsonObj = new JSONObject(response);
-					if (jsonObj.optBoolean("success"))
-					{
+					if (jsonObj.optBoolean("success")) {
 						UserService.this.onSuccess(userObj.firstName);
-					} else
-					{
+					} else {
 						UserService.this.onError(jsonObj.optString("message"));
 					}
-				} catch (JSONException jsonExcep)
-				{
+				} catch (JSONException jsonExcep) {
 					Log.e("Error", "Json", jsonExcep);
 				}
-				
+
 			}
 		};
-		
+
 		registerUserRequest.execute();
 	}
 }
