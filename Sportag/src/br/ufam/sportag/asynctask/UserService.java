@@ -59,11 +59,7 @@ public abstract class UserService {
 				JSONObject jsonObj;
 				try {
 					jsonObj = new JSONObject(response);
-					if (jsonObj.optBoolean("success")) {
 						UserService.this.onSuccess(userObj.firstName);
-					} else {
-						UserService.this.onError(jsonObj.optString("message"));
-					}
 				} catch (JSONException jsonExcep) {
 					Log.e("Error", "Json", jsonExcep);
 				}

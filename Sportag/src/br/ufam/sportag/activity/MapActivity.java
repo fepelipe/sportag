@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.SyncStateContract.Constants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,11 +26,13 @@ public class MapActivity extends Activity {
 	private SharedPreferences strings;
 	private GoogleMap map;
 	private LatLng userLocation;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
+		
+		strings = getSharedPreferences("strings", MODE_PRIVATE);
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(
 				R.id.map_fragment)).getMap();
@@ -61,15 +62,15 @@ public class MapActivity extends Activity {
 
 	private void addEventsMarker() {
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.045086, -60.085949)).title("Runners"));
+				new LatLng(-3.045086, -60.085949)).title("Runners").snippet("Evento"));
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.102331, -60.025342)).title("Sk8 dos Brow"));
+				new LatLng(-3.102331, -60.025342)).title("Sk8 dos Brow").snippet("Evento"));
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.130390, -60.023165)).title("Amigo Coração"));
+				new LatLng(-3.130390, -60.023165)).title("Amigo Coração").snippet("Evento"));
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo"));
+				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo").snippet("Evento"));
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.067638, -60.095109)).title("Pedala Galera"));
+				new LatLng(-3.067638, -60.095109)).title("Pedala Galera").snippet("Evento"));
 
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638,
 				-60.095109), 14));

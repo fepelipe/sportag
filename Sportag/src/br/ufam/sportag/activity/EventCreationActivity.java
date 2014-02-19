@@ -30,5 +30,6 @@ public class EventCreationActivity extends Activity {
 				EventActivity.class);
 		intent.putExtra("eventTitle", "Runners");
 		startActivity(intent);
+		this.finish();
 	}
 }

@@ -45,8 +45,8 @@ public class MainActivity extends Activity implements RegisterResponse {
 		}
 	}
 
-	// Se n�o houver token, pode-se fazer a request de um token em AccessToken
-	// Esse � o m�todo chamado ao apertar o bot�o "Iniciar autentica��o"
+	// Se não houver token, pode-se fazer a request de um token em AccessToken
+	// Esse é o método chamado ao apertar o botão "Iniciar autenticação"
 	public void foursquareAuth(View view) {
 		Intent intent = FoursquareOAuth.getConnectIntent(this, CLIENT_ID);
 		if (!FoursquareOAuth.isPlayStoreIntent(intent)) {
@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements RegisterResponse {
 			tokenUrl = "https://foursquare.com/oauth2/access_token"
 					+ "?client_id=" + CLIENT_ID + "&client_secret="
 					+ CLIENT_SECRET + "&grant_type=authorization_code"
-					+ "&code=" + code + "&v=20140212";
+					+ "&code=" + code + "&v=20140219";
 			
 			HttpWebRequest tokenRequest = new HttpWebRequest(this, tokenUrl)
 			{
