@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import br.ufam.sportag.R;
 
 public class EventCreationActivity extends Activity {
@@ -13,6 +15,25 @@ public class EventCreationActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_creation);
+		
+		Spinner sportsSpinner = (Spinner) findViewById(R.id.spinner_sport);
+		Spinner locationSpinner = (Spinner) findViewById(R.id.spinner_location);
+		Spinner privacySpinner = (Spinner) findViewById(R.id.spinner_privacy);
+
+		ArrayAdapter<CharSequence> sportsAdapter = ArrayAdapter.createFromResource(this,
+		        R.array.sports_array, android.R.layout.simple_spinner_item);
+		sportsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		sportsSpinner.setAdapter(sportsAdapter);
+		
+		ArrayAdapter<CharSequence> locationAdapter = ArrayAdapter.createFromResource(this,
+		        R.array.fakeLocation_array, android.R.layout.simple_spinner_item);
+		locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		locationSpinner.setAdapter(locationAdapter);
+		
+		ArrayAdapter<CharSequence> privacyAdapter = ArrayAdapter.createFromResource(this,
+		        R.array.privacy_array, android.R.layout.simple_spinner_item);
+		privacyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		privacySpinner.setAdapter(privacyAdapter);
 	}
 
 	@Override
