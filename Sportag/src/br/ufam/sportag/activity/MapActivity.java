@@ -56,7 +56,7 @@ public class MapActivity extends Activity {
 		});
 
 		addEventsMarker();
-		// addSelfMarker();
+		addSelfMarker();
 	}
 
 	private void addEventsMarker() {
@@ -70,8 +70,9 @@ public class MapActivity extends Activity {
 				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo"));
 		map.addMarker(new MarkerOptions().position(
 				new LatLng(-3.067638, -60.095109)).title("Pedala Galera"));
-		
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638, -60.095109), 14));
+
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638,
+				-60.095109), 14));
 	}
 
 	private void addSelfMarker() {

@@ -33,7 +33,7 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 		strings = getSharedPreferences("strings", MODE_PRIVATE);
 
-		// TOKEN: Verificação nicial
+		// TOKEN: VerificaÃ§Ã£oo nicial
 		SharedPreferences strings = getSharedPreferences("strings",
 				MODE_PRIVATE);
 		token = strings.getString("token", "null");
@@ -45,8 +45,8 @@ public class MainActivity extends Activity implements RegisterResponse {
 		}
 	}
 
-	// Se não houver token, pode-se fazer a request de um token em AccessToken
-	// Esse é o método chamado ao apertar o botão "Iniciar autenticação"
+	// Se nï¿½o houver token, pode-se fazer a request de um token em AccessToken
+	// Esse ï¿½ o mï¿½todo chamado ao apertar o botï¿½o "Iniciar autenticaï¿½ï¿½o"
 	public void foursquareAuth(View view) {
 		Intent intent = FoursquareOAuth.getConnectIntent(this, CLIENT_ID);
 		if (!FoursquareOAuth.isPlayStoreIntent(intent)) {
