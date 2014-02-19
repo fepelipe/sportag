@@ -26,12 +26,12 @@ public class MapActivity extends Activity {
 	private SharedPreferences strings;
 	private GoogleMap map;
 	private LatLng userLocation;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		
+
 		strings = getSharedPreferences("strings", MODE_PRIVATE);
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(
@@ -46,14 +46,15 @@ public class MapActivity extends Activity {
 						Intent intent = new Intent(getApplicationContext(),
 								ProfileActivity.class);
 						startActivity(intent);
+					} else {
+						Intent intent = new Intent(getApplicationContext(),
+								EventActivity.class);
+						intent.putExtra("eventTitle", marker.getTitle());
+						startActivity(intent);
 					}
-				} else {
-					Intent intent = new Intent(getApplicationContext(),
-							EventActivity.class);
-					intent.putExtra("eventTitle", marker.getTitle());
-					startActivity(intent);
 				}
 			}
+
 		});
 
 		addEventsMarker();
@@ -61,16 +62,21 @@ public class MapActivity extends Activity {
 	}
 
 	private void addEventsMarker() {
-		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.045086, -60.085949)).title("Runners").snippet("Evento"));
-		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.102331, -60.025342)).title("Sk8 dos Brow").snippet("Evento"));
-		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.130390, -60.023165)).title("Amigo Coração").snippet("Evento"));
-		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo").snippet("Evento"));
-		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.067638, -60.095109)).title("Pedala Galera").snippet("Evento"));
+		map.addMarker(new MarkerOptions()
+				.position(new LatLng(-3.045086, -60.085949)).title("Runners")
+				.snippet("Evento"));
+		map.addMarker(new MarkerOptions()
+				.position(new LatLng(-3.102331, -60.025342))
+				.title("Sk8 dos Brow").snippet("Evento"));
+		map.addMarker(new MarkerOptions()
+				.position(new LatLng(-3.130390, -60.023165))
+				.title("Amigo Coração").snippet("Evento"));
+		map.addMarker(new MarkerOptions()
+				.position(new LatLng(-3.082845, -60.009904))
+				.title("Procurando Nemo").snippet("Evento"));
+		map.addMarker(new MarkerOptions()
+				.position(new LatLng(-3.067638, -60.095109))
+				.title("Pedala Galera").snippet("Evento"));
 
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638,
 				-60.095109), 14));
