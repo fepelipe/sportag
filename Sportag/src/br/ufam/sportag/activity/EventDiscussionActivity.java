@@ -51,7 +51,7 @@ public class EventDiscussionActivity extends Activity {
 			add(new Comentario() {{ setDateTime(new Date()); setConteudo("Fechou!"); setUsuario(user2);  }});
 		}};
 		
-		ListAdapter adapter = new AdapterListView<Comentario>(this, R.layout.list_itemtemplate_comentario, listaComentarios)
+		ListAdapter adapter = new AdapterListView<Comentario>(this, R.layout.item_list_eventcomment, listaComentarios)
 		{
 			public void setItemContentLayout(View view, Comentario item)
 			{

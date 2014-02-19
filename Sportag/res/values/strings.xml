@@ -37,4 +37,11 @@
         <item>Patinação</item>
     </string-array>
 
+    <string name="title_activity_event_management">Meus Eventos</string>
+    <string name="title_section1">Confirmados</string>
+    <string name="title_section2">Criados</string>
+    <string name="title_section3">Convites</string>
+    <string name="action_add_event">Adicionar evento</string>
+    <string name="title_activity_event_creation">Criar um evento</string>
+
 </resources>

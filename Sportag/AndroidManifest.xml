@@ -56,13 +56,25 @@
         </activity>
         <activity
             android:name="br.ufam.sportag.activity.FriendsActivity"
-            android:label="@string/title_activity_friends" 
-            android:parentActivityName="br.ufam.sportag.activity.MapActivity">
+            android:label="@string/title_activity_friends"
+            android:parentActivityName="br.ufam.sportag.activity.MapActivity" >
         </activity>
         <activity
             android:name="br.ufam.sportag.FriendChatActivity"
-            android:label="@string/title_activity_friend_chat" 
-            android:parentActivityName="br.ufam.sportag.activity.FriendsActivity">
+            android:label="@string/title_activity_friend_chat"
+            android:parentActivityName="br.ufam.sportag.activity.FriendsActivity" >
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.activity.EventManagementActivity"
+            android:label="@string/title_activity_event_management"
+            android:parentActivityName="br.ufam.sportag.activity.MapActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.ufam.sportag.activity.MapActivity" />
+        </activity>
+        <activity
+            android:name="br.ufam.sportag.activity.EventCreationActivity"
+            android:label="@string/title_activity_event_creation" >
         </activity>
     </application>
 

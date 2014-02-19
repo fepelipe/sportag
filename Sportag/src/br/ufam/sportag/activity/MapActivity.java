@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.SyncStateContract.Constants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,7 +32,7 @@ public class MapActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_map);
-		
+
 		map = ((MapFragment) getFragmentManager().findFragmentById(
 				R.id.map_fragment)).getMap();
 
@@ -39,20 +40,23 @@ public class MapActivity extends Activity {
 
 			@Override
 			public void onInfoWindowClick(Marker marker) {
-				if (marker.getSnippet().equals("Usu�rio")) {
-					Intent intent = new Intent(getApplicationContext(),
-							ProfileActivity.class);
-					startActivity(intent);
+				if (marker.getSnippet() != null) {
+					if (marker.getSnippet().equals("Usuário")) {
+						Intent intent = new Intent(getApplicationContext(),
+								ProfileActivity.class);
+						startActivity(intent);
+					}
 				} else {
 					Intent intent = new Intent(getApplicationContext(),
 							EventActivity.class);
+					intent.putExtra("eventTitle", marker.getTitle());
 					startActivity(intent);
 				}
 			}
 		});
 
 		addEventsMarker();
-//		addSelfMarker();
+		// addSelfMarker();
 	}
 
 	private void addEventsMarker() {
@@ -61,11 +65,13 @@ public class MapActivity extends Activity {
 		map.addMarker(new MarkerOptions().position(
 				new LatLng(-3.102331, -60.025342)).title("Sk8 dos Brow"));
 		map.addMarker(new MarkerOptions().position(
-				new LatLng(-3.130390, -60.023165)).title("Amigo Cora��o"));
+				new LatLng(-3.130390, -60.023165)).title("Amigo Coração"));
 		map.addMarker(new MarkerOptions().position(
 				new LatLng(-3.082845, -60.009904)).title("Procurando Nemo"));
 		map.addMarker(new MarkerOptions().position(
 				new LatLng(-3.067638, -60.095109)).title("Pedala Galera"));
+		
+		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638, -60.095109), 14));
 	}
 
 	private void addSelfMarker() {
@@ -83,7 +89,7 @@ public class MapActivity extends Activity {
 
 		map.addMarker(new MarkerOptions()
 				.title(strings.getString("userFirstName", "User"))
-				.snippet("Usu�rio").position(userLocation));
+				.snippet("Usuário").position(userLocation));
 	}
 
 	@Override
@@ -107,7 +113,7 @@ public class MapActivity extends Activity {
 	}
 
 	private void callEventActivity() {
-		Intent intent = new Intent(this, EventActivity.class);
+		Intent intent = new Intent(this, EventManagementActivity.class);
 		startActivity(intent);
 	}
 
