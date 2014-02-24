@@ -2,24 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_marginBottom="16dp" >
 
-    <TextView
-        android:id="@+id/nomeUsuarioComentario"
+    <RelativeLayout
+        android:id="@+id/titleItemComment"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/nomeUsuarioComentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
+            android:id="@+id/horaEnvioComentario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/textoMensagemComentario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/horaEnvioComentario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </LinearLayout>

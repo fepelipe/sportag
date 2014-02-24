@@ -6,19 +6,19 @@ import java.util.Date;
 public class Comentario
 {
 	private int id;
-	private Date dateTime;
+	private Date dataHora;
 	private String conteudo;
 	private Evento evento;
 	private Usuario usuario;
 	
-	public Date getDateTime()
+	public Date getDataHora()
 	{
-		return dateTime;
+		return dataHora;
 	}
 	
-	public void setDateTime(Date dateTime)
+	public void setDataHora(Date dateTime)
 	{
-		this.dateTime = dateTime;
+		this.dataHora = dateTime;
 	}
 	
 	public String getConteudo()
