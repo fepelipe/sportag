@@ -14,14 +14,25 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String> {
 	Context contexto;
 	ProgressDialog progressDialog;
 	private String urlString;
+	private String loadingMessage;
 
-	public HttpWebRequest(Context paramContext, String paramString) {
+	public HttpWebRequest(Context paramContext, String urlString) {
+		this.loadingMessage = "Carregando...";
 		this.contexto = paramContext;
-		this.urlString = paramString;
+		this.urlString = urlString;
+	}
+	
+	public HttpWebRequest(Context paramContext, String urlString, String loadingMessage) {
+		this.loadingMessage = loadingMessage;
+		this.contexto = paramContext;
+		this.urlString = urlString;
 	}
 
 	protected String doInBackground(Void... paramVarArgs) {
 		try {
+			
+			Log.d("Request", "[GET] " + urlString);
+			
 			HttpURLConnection localHttpURLConnection = (HttpURLConnection) new URL(
 					this.urlString).openConnection();
 			localHttpURLConnection.setRequestMethod("GET");
@@ -54,7 +65,7 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		this.progressDialog = ProgressDialog.show(this.contexto, "",
-				"Carregando...");
+				loadingMessage);
 		this.progressDialog.setCancelable(false);
 	}
 

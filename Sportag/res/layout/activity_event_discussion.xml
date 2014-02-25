@@ -12,7 +12,9 @@
         android:id="@+id/list_eventMessages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_eventMessageSend" >
+        android:layout_above="@+id/btn_eventMessageSend"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" >
     </ListView>
 
     <Button
@@ -22,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:onClick="btn_eventMessageSend_Click"
         android:text="@string/btn_send" />
 
     <EditText
