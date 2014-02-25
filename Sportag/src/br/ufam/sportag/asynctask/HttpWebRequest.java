@@ -21,8 +21,9 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String> {
 		this.contexto = paramContext;
 		this.urlString = urlString;
 	}
-	
-	public HttpWebRequest(Context paramContext, String urlString, String loadingMessage) {
+
+	public HttpWebRequest(Context paramContext, String urlString,
+			String loadingMessage) {
 		this.loadingMessage = loadingMessage;
 		this.contexto = paramContext;
 		this.urlString = urlString;
@@ -30,9 +31,9 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String> {
 
 	protected String doInBackground(Void... paramVarArgs) {
 		try {
-			
+
 			Log.d("Request", "[GET] " + urlString);
-			
+
 			HttpURLConnection localHttpURLConnection = (HttpURLConnection) new URL(
 					this.urlString).openConnection();
 			localHttpURLConnection.setRequestMethod("GET");
@@ -54,7 +55,10 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String> {
 
 	protected void onPostExecute(String paramString) {
 		super.onPostExecute(paramString);
-		this.progressDialog.dismiss();
+		try {
+			this.progressDialog.dismiss();
+		} catch (Exception e) {
+		}
 		if (paramString != null) {
 			onSuccess(paramString);
 			return;

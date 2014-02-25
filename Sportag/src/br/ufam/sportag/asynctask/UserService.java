@@ -52,7 +52,7 @@ public abstract class UserService {
 			}
 		};
 
-		String str = Util.userRegisterUrl + Util.dictionaryToString(args);
+		String str = Util.addUrl + Util.dictionaryToString(args);
 		HttpWebRequest registerUserRequest = new HttpWebRequest(
 				UserService.this.context, str) {
 			public void onSuccess(String response) {

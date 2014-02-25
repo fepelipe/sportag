@@ -3,6 +3,7 @@ package br.ufam.sportag.activity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -40,8 +41,8 @@ public class EventActivity extends Activity {
 		map = ((MapFragment) getFragmentManager().findFragmentById(
 				R.id.map_event)).getMap();
 
-		//TODO Receber Evento, LocalizacaoEvento e Usuario para setar dados
-		//Seta os detalhes do evento
+		// TODO Receber Evento, LocalizacaoEvento e Usuario para setar dados
+		// Seta os detalhes do evento
 		tvEventName.setText(eventTitle);
 		if (eventTitle.equals("Runners")) {
 			tvEventPrivacy.setText("Público");
@@ -70,8 +71,9 @@ public class EventActivity extends Activity {
 			eventLocation = new LatLng(-3.067638, -60.095109);
 		}
 
-		//Adiciona a localização do evento no mapa
-		map.addMarker(new MarkerOptions().position(eventLocation));
+		// Adiciona a localização do evento no mapa
+		map.addMarker(new MarkerOptions().position(eventLocation).icon(
+				BitmapDescriptorFactory.fromResource(R.drawable.icone_futebol)));
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 14));
 	}
 

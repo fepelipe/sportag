@@ -17,7 +17,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:hint="Nome do Evento" >
+        android:hint="Nome do Evento"
+        android:maxLines="1" >
 
         <requestFocus />
     </EditText>
@@ -90,9 +91,9 @@
         android:id="@+id/btn_eventCreationDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/button1"
         android:layout_gravity="end"
-        android:layout_alignParentRight="true"
         android:onClick="createEvent"
         android:text="Feito!" />
 
