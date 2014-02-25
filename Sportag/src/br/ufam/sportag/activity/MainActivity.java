@@ -3,6 +3,7 @@ package br.ufam.sportag.activity;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -26,11 +27,15 @@ public class MainActivity extends Activity implements RegisterResponse {
 	private static final String CLIENT_SECRET = "SFOGBEQSUQIOG212M1YJVCRIXP4CA0SJUA5CWEQV1LTOBW1E";
 	private SharedPreferences strings;
 	
+	public static Context ApplicationContext;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		ApplicationContext = getApplicationContext();
+		
 		strings = getSharedPreferences("strings", MODE_PRIVATE);
 
 		// TOKEN: Verificaçãoo nicial

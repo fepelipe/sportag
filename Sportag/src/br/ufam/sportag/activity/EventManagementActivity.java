@@ -1,8 +1,11 @@
 package br.ufam.sportag.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -13,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,8 +25,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.ufam.sportag.R;
+import br.ufam.sportag.Util;
 import br.ufam.sportag.adapter.AdapterListView;
+import br.ufam.sportag.asynctask.HttpWebRequest;
+import br.ufam.sportag.model.Esporte;
 import br.ufam.sportag.model.Evento;
+import br.ufam.sportag.model.LocalizacaoEvento;
+import br.ufam.sportag.model.Usuario;
 
 public class EventManagementActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -195,20 +204,7 @@ public class EventManagementActivity extends FragmentActivity implements
 
 			ArrayList<Evento> listaEventos = new ArrayList<Evento>();
 			
-			// Criar listaEventos diferente para cada seção
-			switch (getArguments().getInt("ARG_SECTION_NUMBER")) {
-			case 0:
-				// Eventos confirmados
-				break;
-			case 1:
-				// Eventos criados
-				break;
-			case 2:
-				// Eventos 
-				break;
-			default:
-				break;
-			}
+			ViewPager myViewPager = ((EventManagementActivity) getActivity()).mViewPager;
 			
 			AdapterListView<Evento> adapterListEvent = new AdapterListView<Evento>(
 					getActivity(), R.layout.item_list_events, listaEventos) {
@@ -219,7 +215,7 @@ public class EventManagementActivity extends FragmentActivity implements
 							.setText(item.getNome());
 					((TextView) view.findViewById(R.id.tv_eventTime))
 							.setText(null);
-					((TextView) view.findViewById(R.id.tv_eventAddress))
+					((TextView) view.findViewById(R.id.tv_eventSportLocal))
 							.setText(item.getLocalizacaoEvento().getNomeLocal());
 					((TextView) view.findViewById(R.id.tv_eventAttendants))
 							.setText(null);
@@ -227,8 +223,77 @@ public class EventManagementActivity extends FragmentActivity implements
 			};
 
 			listEvent.setAdapter(adapterListEvent);
+			
+			// Criar listaEventos diferente para cada seção
+			switch (myViewPager.getCurrentItem()) {
+			case 0:
+				// Eventos confirmados
+				break;
+			case 1:
+				// Eventos criados
+				obterEventosCriados(listaEventos, adapterListEvent);
+				break;
+			case 2:
+				// Eventos 
+				break;
+			default:
+				break;
+			}
 
 			return rootView;
+		}
+
+		private void obterEventosCriados(final ArrayList<Evento> listaEventos, final AdapterListView<Evento> adapterListEvent)
+		{
+			// TODO Usuário, Esporte e Localização estão estáticos!
+			listaEventos.clear();
+			adapterListEvent.notifyDataSetChanged();
+			
+			final Usuario user1 = new Usuario(){{ setId_foursquare(30004723); setNome("Richard Lopes"); }};
+			final Esporte sport1 = new Esporte() {{ setId(2); setNome("Vôlei"); }};
+			final LocalizacaoEvento local = new LocalizacaoEvento() {{ setNomeLocal("Inferno"); }}; 
+			
+			HashMap<String, Object> args = new HashMap<String, Object>()
+			{{
+				put("type", "evento");
+				put("criador_usuario_id", 30004723);
+			}};
+			
+			String requestUrl = Util.sportagServerUrl + "search.php" + Util.dictionaryToString(args);
+			HttpWebRequest webRequest = new HttpWebRequest(getActivity(), requestUrl)
+			{
+				public void onSuccess(String jsonString)
+				{
+					JSONArray arrayObj;
+					try
+					{
+						arrayObj = new JSONArray(jsonString);
+						for(int i=0; i<arrayObj.length(); i++)
+						{
+							final JSONObject eventoObj = arrayObj.getJSONObject(i);
+							
+							Evento evento = new Evento()
+							{{
+								setId(eventoObj.getInt("id"));
+								setNome(eventoObj.getString("nome"));
+								setVisivel(eventoObj.getInt("visivel") == 1);
+								setCriador(user1);
+								setEsporte(sport1);
+								setLocalizacaoEvento(local);
+							}};
+							
+							listaEventos.add(evento);
+						}
+						
+						adapterListEvent.notifyDataSetChanged();
+					} catch (JSONException e)
+					{
+						Log.e("Erro", "JSON", e);
+					}
+				}
+			}; 
+			
+			webRequest.execute();
 		}
 	}
 
