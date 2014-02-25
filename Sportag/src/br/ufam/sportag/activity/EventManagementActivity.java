@@ -145,7 +145,7 @@ public class EventManagementActivity extends FragmentActivity implements
 			// below) with the page number as its lone argument.
 			Fragment fragment = new DummySectionFragment();
 			Bundle args = new Bundle();
-			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+			args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position);
 			fragment.setArguments(args);
 			return fragment;
 		}
@@ -194,18 +194,40 @@ public class EventManagementActivity extends FragmentActivity implements
 					.findViewById(R.id.list_event_management);
 
 			ArrayList<Evento> listaEventos = new ArrayList<Evento>();
+			
+			// Criar listaEventos diferente para cada seção
+			switch (getArguments().getInt("ARG_SECTION_NUMBER")) {
+			case 0:
+				// Eventos confirmados
+				break;
+			case 1:
+				// Eventos criados
+				break;
+			case 2:
+				// Eventos 
+				break;
+			default:
+				break;
+			}
+			
 			AdapterListView<Evento> adapterListEvent = new AdapterListView<Evento>(
 					getActivity(), R.layout.item_list_events, listaEventos) {
 
 				@Override
 				public void setItemContentLayout(View view, Evento item) {
-					((TextView) view.findViewById(R.id.tv_eventTitle)).setText(item.getNome());
-					((TextView) view.findViewById(R.id.tv_eventTime)).setText(item.getNome());
-					((TextView) view.findViewById(R.id.tv_eventAddress)).setText(item.getNome());
-					((TextView) view.findViewById(R.id.tv_eventAttendants)).setText(item.getNome());
+					((TextView) view.findViewById(R.id.tv_eventTitle))
+							.setText(item.getNome());
+					((TextView) view.findViewById(R.id.tv_eventTime))
+							.setText(null);
+					((TextView) view.findViewById(R.id.tv_eventAddress))
+							.setText(item.getLocalizacaoEvento().getNomeLocal());
+					((TextView) view.findViewById(R.id.tv_eventAttendants))
+							.setText(null);
 				}
 			};
-			// Adapter da ListView
+
+			listEvent.setAdapter(adapterListEvent);
+
 			return rootView;
 		}
 	}

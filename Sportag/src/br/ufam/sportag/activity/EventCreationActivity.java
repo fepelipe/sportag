@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import br.ufam.sportag.R;
+import br.ufam.sportag.asynctask.HttpWebRequest;
 
 public class EventCreationActivity extends Activity {
 
@@ -45,6 +46,7 @@ public class EventCreationActivity extends Activity {
 
 	public void createEvent(View view){
 		//TODO Criar evento no servidor
+		// nome, visivel, localizacao_id, esporte_id, criador_usuario_id
 		
 		//Chama os detalhes do evento
 		Intent intent = new Intent(getApplicationContext(),
