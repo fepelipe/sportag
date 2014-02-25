@@ -3,6 +3,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_margin">16dp</dimen>
 
     <!-- Profile -->
     <dimen name="img_profile_dimen">100dp</dimen>
@@ -16,4 +17,8 @@
     <dimen name="tv_eventTitle_marginTop">22dp</dimen>
     <dimen name="tv_eventDetails_marginTop">12dp</dimen>
 
+    <!-- Event Management -->
+    <dimen name="img_eventSport_dimen">60dp</dimen>
+    <dimen name="tv_eventTitle_marginLeft">12dp</dimen>
+    
 </resources>

@@ -33,6 +33,7 @@
         <item>Natação</item>
         <item>Corrida</item>
         <item>Caminhada</item>
+        <item>Bike</item>
         <item>Skate</item>
         <item>Patinação</item>
     </string-array>
@@ -55,5 +56,6 @@
     <string name="title_section3">Convites</string>
     <string name="action_add_event">Adicionar evento</string>
     <string name="title_activity_event_creation">Criar um evento</string>
+    <string name="atualizar">Atualizar</string>
 
 </resources>

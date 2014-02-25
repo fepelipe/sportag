@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_margin"
+    android:gravity="center_vertical" >
+
+    <ImageView
+        android:contentDescription="@null"
+        android:id="@+id/img_eventSport"
+        android:layout_width="@dimen/img_eventSport_dimen"
+        android:layout_height="@dimen/img_eventSport_dimen"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/unknown_user" />
+
+    <TextView
+        android:id="@+id/tv_eventTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/img_eventSport"
+        android:layout_toRightOf="@id/img_eventSport"
+        android:text="Evento"
+        android:layout_marginLeft="@dimen/tv_eventTitle_marginLeft"/>
+
+    <TextView
+        android:id="@+id/tv_eventTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_eventTitle"
+        android:layout_alignParentRight="true"
+        android:text="14h" />
+    
+    <TextView
+        android:id="@+id/tv_eventSportLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_eventTitle"
+        android:layout_below="@id/tv_eventTitle"
+        android:text="Esporte em Local" />
+
+    <TextView
+        android:id="@+id/tv_eventAttendants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/img_eventSport"
+        android:layout_alignLeft="@id/tv_eventSportLocal"
+        android:text="Participantes" />
+
+
+</RelativeLayout>

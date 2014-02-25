@@ -1,5 +1,7 @@
 package br.ufam.sportag.dialog;
 
+import java.util.Arrays;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -12,6 +14,10 @@ public class EventFilterDialog extends DialogFragment {
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		String[] sportsArray = getResources().getStringArray(
+				R.array.sports_array);
+		Arrays.sort(sportsArray);
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("Filtre Eventos por esporte")
 				.setNegativeButton("Limpar Filtro", new OnClickListener() {

@@ -18,6 +18,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -63,20 +64,35 @@ public class MapActivity extends Activity {
 
 	private void addEventsMarker() {
 		map.addMarker(new MarkerOptions()
-				.position(new LatLng(-3.045086, -60.085949)).title("Runners")
-				.snippet("Evento"));
+				.position(new LatLng(-3.045086, -60.085949))
+				.title("Runners")
+				.snippet("Evento")
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icone_futebol)));
 		map.addMarker(new MarkerOptions()
 				.position(new LatLng(-3.102331, -60.025342))
-				.title("Sk8 dos Brow").snippet("Evento"));
+				.title("Sk8 dos Brow")
+				.snippet("Evento")
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icone_futebol)));
 		map.addMarker(new MarkerOptions()
 				.position(new LatLng(-3.130390, -60.023165))
-				.title("Amigo Coração").snippet("Evento"));
+				.title("Amigo Coração")
+				.snippet("Evento")
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icone_futebol)));
 		map.addMarker(new MarkerOptions()
 				.position(new LatLng(-3.082845, -60.009904))
-				.title("Procurando Nemo").snippet("Evento"));
+				.title("Procurando Nemo")
+				.snippet("Evento")
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icone_futebol)));
 		map.addMarker(new MarkerOptions()
 				.position(new LatLng(-3.067638, -60.095109))
-				.title("Pedala Galera").snippet("Evento"));
+				.title("Pedala Galera")
+				.snippet("Evento")
+				.icon(BitmapDescriptorFactory
+						.fromResource(R.drawable.icone_futebol)));
 
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638,
 				-60.095109), 14));

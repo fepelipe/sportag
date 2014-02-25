@@ -1,12 +1,7 @@
 package br.ufam.sportag.activity;
 
+import java.util.ArrayList;
 import java.util.Locale;
-
-import br.ufam.sportag.R;
-import br.ufam.sportag.R.id;
-import br.ufam.sportag.R.layout;
-import br.ufam.sportag.R.menu;
-import br.ufam.sportag.R.string;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -18,13 +13,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
+import br.ufam.sportag.R;
+import br.ufam.sportag.adapter.AdapterListView;
+import br.ufam.sportag.model.Evento;
 
 public class EventManagementActivity extends FragmentActivity implements
 		ActionBar.TabListener {
@@ -190,12 +188,24 @@ public class EventManagementActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(
-					R.layout.fragment_event_management_dummy, container, false);
-			TextView dummyTextView = (TextView) rootView
-					.findViewById(R.id.section_label);
-			dummyTextView.setText(Integer.toString(getArguments().getInt(
-					ARG_SECTION_NUMBER)));
+			View rootView = inflater.inflate(R.layout.fragment_event_list,
+					container, false);
+			ListView listEvent = (ListView) rootView
+					.findViewById(R.id.list_event_management);
+
+			ArrayList<Evento> listaEventos = new ArrayList<Evento>();
+			AdapterListView<Evento> adapterListEvent = new AdapterListView<Evento>(
+					getActivity(), R.layout.item_list_events, listaEventos) {
+
+				@Override
+				public void setItemContentLayout(View view, Evento item) {
+					((TextView) view.findViewById(R.id.tv_eventTitle)).setText(item.getNome());
+					((TextView) view.findViewById(R.id.tv_eventTime)).setText(item.getNome());
+					((TextView) view.findViewById(R.id.tv_eventAddress)).setText(item.getNome());
+					((TextView) view.findViewById(R.id.tv_eventAttendants)).setText(item.getNome());
+				}
+			};
+			// Adapter da ListView
 			return rootView;
 		}
 	}
