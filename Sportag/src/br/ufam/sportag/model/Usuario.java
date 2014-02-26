@@ -1,9 +1,10 @@
 
 package br.ufam.sportag.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Usuario
+public class Usuario implements Serializable
 {
 	private int id_foursquare;
 	private String nome;
@@ -12,47 +13,45 @@ public class Usuario
 	private double latitude;
 	private double longitude;
 	
-	private ArrayList<Evento> listaEventosConfirmados;
-	private ArrayList<Evento> listaEventosConvidado;
-	private ArrayList<Evento> listaEventosCheckin;
-	
-	
-	
-	public ArrayList<Evento> getListaEventosConfirmados()
-	{
-		if(listaEventosConfirmados == null )
-			listaEventosConfirmados = new ArrayList<Evento>();
-		return listaEventosConfirmados;
-	}
-
-	public void setListaEventosConfirmados(ArrayList<Evento> listaEventosConfirmados)
-	{
-		this.listaEventosConfirmados = listaEventosConfirmados;
-	}
-
-	public ArrayList<Evento> getListaEventosConvidado()
-	{
-		if(listaEventosConvidado == null)
-			listaEventosConvidado = new ArrayList<Evento>();
-		return listaEventosConvidado;
-	}
-
-	public void setListaEventosConvidado(ArrayList<Evento> listaEventosConvidado)
-	{
-		this.listaEventosConvidado = listaEventosConvidado;
-	}
-
-	public ArrayList<Evento> getListaEventosCheckin()
-	{
-		if(listaEventosCheckin == null)
-			listaEventosCheckin = new ArrayList<Evento>();
-		return listaEventosCheckin;
-	}
-
-	public void setListaEventosCheckin(ArrayList<Evento> listaEventosCheckin)
-	{
-		this.listaEventosCheckin = listaEventosCheckin;
-	}
+//	private ArrayList<Evento> listaEventosConfirmados;
+//	private ArrayList<Evento> listaEventosConvidado;
+//	private ArrayList<Evento> listaEventosCheckin;
+//
+//	public ArrayList<Evento> getListaEventosConfirmados()
+//	{
+//		if(listaEventosConfirmados == null )
+//			listaEventosConfirmados = new ArrayList<Evento>();
+//		return listaEventosConfirmados;
+//	}
+//
+//	public void setListaEventosConfirmados(ArrayList<Evento> listaEventosConfirmados)
+//	{
+//		this.listaEventosConfirmados = listaEventosConfirmados;
+//	}
+//
+//	public ArrayList<Evento> getListaEventosConvidado()
+//	{
+//		if(listaEventosConvidado == null)
+//			listaEventosConvidado = new ArrayList<Evento>();
+//		return listaEventosConvidado;
+//	}
+//
+//	public void setListaEventosConvidado(ArrayList<Evento> listaEventosConvidado)
+//	{
+//		this.listaEventosConvidado = listaEventosConvidado;
+//	}
+//
+//	public ArrayList<Evento> getListaEventosCheckin()
+//	{
+//		if(listaEventosCheckin == null)
+//			listaEventosCheckin = new ArrayList<Evento>();
+//		return listaEventosCheckin;
+//	}
+//
+//	public void setListaEventosCheckin(ArrayList<Evento> listaEventosCheckin)
+//	{
+//		this.listaEventosCheckin = listaEventosCheckin;
+//	}
 
 	public int getId_foursquare()
 	{

@@ -1,9 +1,10 @@
 
 package br.ufam.sportag.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Chat
+public class Chat implements Serializable
 {
 	private int id;
 	private Usuario usuarioRemetente;
