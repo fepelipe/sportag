@@ -274,9 +274,9 @@ public class EventManagementActivity extends FragmentActivity implements
 							
 							Evento evento = new Evento()
 							{{
-								setId(eventoObj.getInt("id"));
-								setNome(eventoObj.getString("nome"));
-								setVisivel(eventoObj.getInt("visivel") == 1);
+								setId(eventoObj.getInt("evento.id"));
+								setNome(eventoObj.getString("evento.nome"));
+								setVisivel(eventoObj.getInt("evento.visivel") == 1);
 								setCriador(user1);
 								setEsporte(sport1);
 								setLocalizacaoEvento(local);

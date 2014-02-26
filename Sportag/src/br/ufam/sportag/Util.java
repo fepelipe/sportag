@@ -29,6 +29,7 @@ public class Util
 	public static String sportagServerUrl = "http://sportag.net76.net/";
 	public static String selfDataRequestUrl = "https://api.foursquare.com/v2/users/self";
 	public static String addUrl = "http://sportag.net76.net/add.php";
+	public static String searchUrl = "http://sportag.net76.net/search.php";
 	
 	public JSONObject jsonParser(String dataString) throws JSONException
 	{

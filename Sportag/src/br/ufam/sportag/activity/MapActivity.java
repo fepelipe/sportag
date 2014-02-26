@@ -1,5 +1,10 @@
 package br.ufam.sportag.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,13 +12,20 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import br.ufam.sportag.R;
+import br.ufam.sportag.Util;
+import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventFilterDialog;
 import br.ufam.sportag.dialog.UserFilterDialog;
-
+import br.ufam.sportag.model.Esporte;
+import br.ufam.sportag.model.Evento;
+import br.ufam.sportag.model.LocalizacaoEvento;
+import br.ufam.sportag.model.Usuario;
+import com.google.android.gms.internal.ev;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -27,6 +39,8 @@ public class MapActivity extends Activity {
 	private SharedPreferences strings;
 	private GoogleMap map;
 	private LatLng userLocation;
+	
+	private ArrayList<Evento> allEventos = new ArrayList<Evento>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +74,78 @@ public class MapActivity extends Activity {
 
 		addEventsMarker();
 		addSelfMarker();
+		obterListaEventos();
+	}
+
+	private void obterListaEventos()
+	{
+		HashMap<String, Object> args = new HashMap<String, Object>()
+		{{
+			put("type", "evento");
+		}};
+		
+		HttpWebRequest webRequest = new HttpWebRequest(this, Util.searchUrl + Util.dictionaryToString(args))
+		{
+			public void onSuccess(String jsonString)
+			{
+				try
+				{
+					JSONArray eventosJSONArray = new JSONArray(jsonString);
+					for(int i=0; i < eventosJSONArray.length(); i++)
+					{
+						final JSONObject eventoJSONObj = eventosJSONArray.getJSONObject(i);
+						
+						final Esporte esporte = new Esporte() 
+						{{
+							setId(eventoJSONObj.getInt("esporte.id"));
+							setNome(eventoJSONObj.getString("esporte.nome"));
+						}};
+						
+						final LocalizacaoEvento localizacao = new LocalizacaoEvento() 
+						{{
+							setId(eventoJSONObj.getInt("localizacao_evento.id"));
+							setNomeLocal(eventoJSONObj.getString("localizacao_evento.nomeLocal"));
+							setLatitude(eventoJSONObj.getDouble("localizacao_evento.latitude"));
+							setLongitude(eventoJSONObj.getDouble("localizacao_evento.longitude"));
+							setEndereco(eventoJSONObj.getString("localizacao_evento.endereço"));
+						}};
+						
+						final Usuario usuario = new Usuario() 
+						{{
+							setId_foursquare(eventoJSONObj.getInt("usuario.id_foursquare"));
+							setNome(eventoJSONObj.getString("usuario.nome"));
+							setFotoPrefix(eventoJSONObj.getString("usuario.fotoPrefix"));
+							setFotoSuffix(eventoJSONObj.getString("usuario.fotoSuffix"));
+						}};
+						
+						Evento evento = new Evento()
+						{{
+							setId(eventoJSONObj.getInt("evento.id"));
+							setNome(eventoJSONObj.getString("evento.nome"));
+							setVisivel(eventoJSONObj.getInt("evento.visivel") == 1);
+							setEsporte(esporte);
+							setLocalizacaoEvento(localizacao);
+							setCriador(usuario);
+						}};
+						
+						allEventos.add(evento);
+						
+						afterParsing();
+					}
+					
+				} catch (JSONException e)
+				{
+					Log.e("Erro", "Parsing Eventos from JSON", e);
+				}
+			}
+
+			private void afterParsing()
+			{
+				// TODO Colocar aqui o que vai acontecer depois da lista de eventos ser carregada
+				
+			}
+		};
+		webRequest.execute();
 	}
 
 	private void addEventsMarker() {
