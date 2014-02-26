@@ -2,20 +2,21 @@ package br.ufam.sportag.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import br.ufam.sportag.GeoCoordinate;
 import br.ufam.sportag.R;
 import br.ufam.sportag.Util;
 import br.ufam.sportag.asynctask.HttpWebRequest;
@@ -25,7 +26,7 @@ import br.ufam.sportag.model.Esporte;
 import br.ufam.sportag.model.Evento;
 import br.ufam.sportag.model.LocalizacaoEvento;
 import br.ufam.sportag.model.Usuario;
-import com.google.android.gms.internal.ev;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -72,9 +73,8 @@ public class MapActivity extends Activity {
 
 		});
 
-		addEventsMarker();
-		addSelfMarker();
 		obterListaEventos();
+		addSelfMarker();
 	}
 
 	private void obterListaEventos()
@@ -141,65 +141,83 @@ public class MapActivity extends Activity {
 
 			private void afterParsing()
 			{
-				// TODO Colocar aqui o que vai acontecer depois da lista de eventos ser carregada
-				
+				addEventsMarker();
 			}
 		};
 		webRequest.execute();
 	}
 
 	private void addEventsMarker() {
-		map.addMarker(new MarkerOptions()
-				.position(new LatLng(-3.045086, -60.085949))
-				.title("Runners")
-				.snippet("Evento")
-				.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.icone_futebol)));
-		map.addMarker(new MarkerOptions()
-				.position(new LatLng(-3.102331, -60.025342))
-				.title("Sk8 dos Brow")
-				.snippet("Evento")
-				.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.icone_futebol)));
-		map.addMarker(new MarkerOptions()
-				.position(new LatLng(-3.130390, -60.023165))
-				.title("Amigo Coração")
-				.snippet("Evento")
-				.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.icone_futebol)));
-		map.addMarker(new MarkerOptions()
-				.position(new LatLng(-3.082845, -60.009904))
-				.title("Procurando Nemo")
-				.snippet("Evento")
-				.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.icone_futebol)));
-		map.addMarker(new MarkerOptions()
-				.position(new LatLng(-3.067638, -60.095109))
-				.title("Pedala Galera")
-				.snippet("Evento")
-				.icon(BitmapDescriptorFactory
-						.fromResource(R.drawable.icone_futebol)));
-
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-3.067638,
-				-60.095109), 14));
+		// Eventos recuperados do servidor
+		for (int i=0; i < allEventos.size(); i++){
+			final Evento evento = allEventos.get(i);
+			final LocalizacaoEvento localizacao = evento.getLocalizacaoEvento();
+			map.addMarker(new MarkerOptions()
+					.position(new LatLng(localizacao.getLatitude(), localizacao.getLongitude()))
+					.title(evento.getNome())
+					.snippet("Evento")
+					.icon(BitmapDescriptorFactory
+							.fromResource(R.drawable.icone_futebol)));
+		}
+		
+		// Eventos estáticos
+//		map.addMarker(new MarkerOptions()
+//				.position(new LatLng(-3.045086, -60.085949))
+//				.title("Runners")
+//				.snippet("Evento")
+//				.icon(BitmapDescriptorFactory
+//						.fromResource(R.drawable.icone_futebol)));
+//		map.addMarker(new MarkerOptions()
+//				.position(new LatLng(-3.102331, -60.025342))
+//				.title("Sk8 dos Brow")
+//				.snippet("Evento")
+//				.icon(BitmapDescriptorFactory
+//						.fromResource(R.drawable.icone_futebol)));
+//		map.addMarker(new MarkerOptions()
+//				.position(new LatLng(-3.130390, -60.023165))
+//				.title("Amigo Coração")
+//				.snippet("Evento")
+//				.icon(BitmapDescriptorFactory
+//						.fromResource(R.drawable.icone_futebol)));
+//		map.addMarker(new MarkerOptions()
+//				.position(new LatLng(-3.082845, -60.009904))
+//				.title("Procurando Nemo")
+//				.snippet("Evento")
+//				.icon(BitmapDescriptorFactory
+//						.fromResource(R.drawable.icone_futebol)));
+//		map.addMarker(new MarkerOptions()
+//				.position(new LatLng(-3.067638, -60.095109))
+//				.title("Pedala Galera")
+//				.snippet("Evento")
+//				.icon(BitmapDescriptorFactory
+//						.fromResource(R.drawable.icone_futebol)));
 	}
 
 	private void addSelfMarker() {
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		GeoCoordinate coordinates = new GeoCoordinate(this) {
+			
+			@Override
+			public void onGPSSuccess(Location location) {
+				double userLongitude = location.getLongitude();
+				double userLatitude = location.getLatitude();
 
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		double userLongitude = location.getLongitude();
-		double userLatitude = location.getLatitude();
+				userLocation = new LatLng(userLatitude, userLongitude);
 
-		userLocation = new LatLng(userLatitude, userLongitude);
+				map.setMyLocationEnabled(true);
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
 
-		map.setMyLocationEnabled(true);
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 14));
-
-		map.addMarker(new MarkerOptions()
-				.title(strings.getString("userFirstName", "User"))
-				.snippet("Usuário").position(userLocation));
+				map.addMarker(new MarkerOptions()
+						.title(strings.getString("userFirstName", "User"))
+						.snippet("Usuário").position(userLocation));
+			}
+			
+			@Override
+			public void onFail(String title, String message) {
+				// TODO Toast error
+				
+			}
+		};
+		coordinates.startService();
 	}
 
 	@Override

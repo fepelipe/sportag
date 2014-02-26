@@ -1,5 +1,6 @@
 package br.ufam.sportag.activity;
 
+import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
@@ -7,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -72,7 +74,7 @@ public class MainActivity extends Activity implements RegisterResponse {
 			tokenUrl = "https://foursquare.com/oauth2/access_token"
 					+ "?client_id=" + CLIENT_ID + "&client_secret="
 					+ CLIENT_SECRET + "&grant_type=authorization_code"
-					+ "&code=" + code + "&v=20140219";
+					+ "&code=" + code + "&v=" + DateFormat.format("yyyyMMdd", new Date());
 			
 			HttpWebRequest tokenRequest = new HttpWebRequest(this, tokenUrl)
 			{
