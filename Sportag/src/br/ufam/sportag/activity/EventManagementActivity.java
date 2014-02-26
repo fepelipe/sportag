@@ -3,9 +3,11 @@ package br.ufam.sportag.activity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -197,6 +199,7 @@ public class EventManagementActivity extends FragmentActivity implements
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
+			Log.i("ARG_SECTION_NUMBER", String.valueOf(getArguments().getInt(ARG_SECTION_NUMBER)));
 			View rootView = inflater.inflate(R.layout.fragment_event_list,
 					container, false);
 			ListView listEvent = (ListView) rootView
@@ -225,7 +228,7 @@ public class EventManagementActivity extends FragmentActivity implements
 			listEvent.setAdapter(adapterListEvent);
 			
 			// Criar listaEventos diferente para cada seção
-			switch (myViewPager.getCurrentItem()) {
+			switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
 			case 0:
 				// Eventos confirmados
 				break;
@@ -274,9 +277,9 @@ public class EventManagementActivity extends FragmentActivity implements
 							
 							Evento evento = new Evento()
 							{{
-								setId(eventoObj.getInt("id"));
-								setNome(eventoObj.getString("nome"));
-								setVisivel(eventoObj.getInt("visivel") == 1);
+								setId(eventoObj.getInt("evento.id"));
+								setNome(eventoObj.getString("evento.nome"));
+								setVisivel(eventoObj.getInt("evento.visivel") == 1);
 								setCriador(user1);
 								setEsporte(sport1);
 								setLocalizacaoEvento(local);
