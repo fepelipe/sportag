@@ -1,109 +1,125 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayout1"
+    android:id="@+id/scrollview_eventcreation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EventCreationActivity" >
 
-    <EditText
-        android:id="@+id/edt_eventName"
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:hint="Nome do Evento"
-        android:maxLines="1" >
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
 
-        <requestFocus />
-    </EditText>
+        <EditText
+            android:id="@+id/edt_eventName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+            android:hint="Nome do Evento"
+            android:maxLines="1" >
 
-    <TextView
-        android:id="@+id/tv_label_spinnerSport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/edt_eventName"
-        android:layout_marginTop="12dp"
-        android:text="Esporte" />
+            <requestFocus />
+        </EditText>
 
-    <Spinner
-        android:id="@+id/spinner_sport"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_label_spinnerSport" />
+        <TextView
+            android:id="@+id/tv_label_spinnerSport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/edt_eventName"
+            android:layout_marginTop="12dp"
+            android:text="Esporte" />
 
-    <TextView
-        android:id="@+id/tv_label_spinnerLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spinner_sport"
-        android:layout_marginTop="12dp"
-        android:text="Localização" />
+        <Spinner
+            android:id="@+id/spinner_sport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_label_spinnerSport" />
 
-    <Spinner
-        android:id="@+id/spinner_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_label_spinnerLocation" />
+        <TextView
+            android:id="@+id/tv_label_spinnerLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/spinner_sport"
+            android:layout_marginTop="12dp"
+            android:text="Localização" />
 
-    <TextView
-        android:id="@+id/tv_label_spinnerPrivacy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spinner_location"
-        android:layout_marginTop="12dp"
-        android:text="Visibilidade" />
+        <Spinner
+            android:id="@+id/spinner_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_label_spinnerLocation" />
 
-    <Spinner
-        android:id="@+id/spinner_privacy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tv_label_spinnerPrivacy" />
+        <TextView
+            android:id="@+id/tv_label_spinnerPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/spinner_location"
+            android:layout_marginTop="12dp"
+            android:text="Visibilidade" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/spinner_privacy"
-        android:text="Sem data marcada" />
+        <Spinner
+            android:id="@+id/spinner_privacy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_label_spinnerPrivacy" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView1"
-        android:text="Data" />
+        <TextView
+            android:id="@+id/tv_label_eventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/spinner_privacy"
+            android:text="Sem data marcada" />
 
-    <Button
-        android:id="@+id/btn_eventCreationDone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/button1"
-        android:layout_gravity="end"
-        android:onClick="createEvent"
-        android:text="Feito!" />
+        <TextView
+            android:id="@+id/tv_label_eventTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_label_eventDate"
+            android:text="Sem hora marcada" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_toRightOf="@+id/button1"
-        android:text="Hora" />
+        <Button
+            android:id="@+id/btn_eventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_label_eventTime"
+            android:onClick="callDateDialog"
+            android:text="Data" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_eventCreationDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/btn_eventDate"
+            android:layout_gravity="end"
+            android:onClick="createEvent"
+            android:text="Feito!" />
+
+        <Button
+            android:id="@+id/btn_eventTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btn_eventDate"
+            android:layout_alignBottom="@+id/btn_eventDate"
+            android:layout_toRightOf="@+id/btn_eventDate"
+            android:onClick="callTimeDialog"
+            android:text="Hora" />
+    </RelativeLayout>
+
+</ScrollView>

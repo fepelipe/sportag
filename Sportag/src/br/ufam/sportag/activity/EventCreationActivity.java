@@ -14,21 +14,31 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 import br.ufam.sportag.R;
 import br.ufam.sportag.Util;
 import br.ufam.sportag.asynctask.HttpWebRequest;
+import br.ufam.sportag.dialog.EventDateDialog;
+import br.ufam.sportag.dialog.EventTimeDialog;
 
 public class EventCreationActivity extends Activity {
 	private String success;
+	EditText editEventName;
+	Spinner sportsSpinner;
+	Spinner locationSpinner;
+	Spinner privacySpinner;
+	EventDateDialog dateDialog = new EventDateDialog();
+	EventTimeDialog timeDialog = new EventTimeDialog();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_creation);
 
-		Spinner sportsSpinner = (Spinner) findViewById(R.id.spinner_sport);
-		Spinner locationSpinner = (Spinner) findViewById(R.id.spinner_location);
-		Spinner privacySpinner = (Spinner) findViewById(R.id.spinner_privacy);
+		editEventName = (EditText) findViewById(R.id.edt_eventName);
+		sportsSpinner = (Spinner) findViewById(R.id.spinner_sport);
+		locationSpinner = (Spinner) findViewById(R.id.spinner_location);
+		privacySpinner = (Spinner) findViewById(R.id.spinner_privacy);
 
 		ArrayAdapter<CharSequence> sportsAdapter = ArrayAdapter
 				.createFromResource(this, R.array.sports_array,
@@ -50,6 +60,8 @@ public class EventCreationActivity extends Activity {
 		privacyAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		privacySpinner.setAdapter(privacyAdapter);
+		
+		
 	}
 
 	@Override
@@ -59,27 +71,40 @@ public class EventCreationActivity extends Activity {
 		return true;
 	}
 
+	public void callDateDialog(View view) {
+		dateDialog.show(getFragmentManager(), "datePicker");
+	}
+
+	public void callTimeDialog(View view) {
+		timeDialog.show(getFragmentManager(), "timePicker");
+	}
+
 	public void createEvent(View view) {
-		// TODO Criar evento no servidor
-		// nome, visivel, localizacao_id, esporte_id, criador_usuario_id
-		final EditText editEventName = (EditText) findViewById(R.id.edt_eventName);
-		final Spinner spinnerSport = (Spinner) findViewById(R.id.spinner_sport);
-		final Spinner spinnerLocation = (Spinner) findViewById(R.id.spinner_location);
-		final Spinner spinnerPrivacy = (Spinner) findViewById(R.id.spinner_privacy);
+		// Construir timestamp no formato aceito pelo servidor
+		final String datahora = dateDialog.year + "-" + dateDialog.month + "-"
+				+ dateDialog.day + " " + timeDialog.hour + ":"
+				+ timeDialog.minute + ":00";
+		Log.i("Evento DataHora", datahora);
 		
+		// // TODO Tratamento de exceções (campos vazios)
+		// Toast.makeText(getApplicationContext(), "msg msg",
+		// Toast.LENGTH_SHORT).show();
+		
+		// Construir URL de requisição para criação de evento no servidor
 		HashMap<String, Object> args = new HashMap<String, Object>() {
 			{
 				put("type", "evento");
 				put("nome", editEventName.getText().toString());
 				put("visivel", "1");
-				put("dataHora", "2014-02-25 02:24:00");
+				put("dataHora", datahora);
 				put("localizacao_id", "1");
 				put("esporte_id", "1");
 				put("criador_usuario_id", "30004723");
 			}
 		};
-
 		String createEventUrl = Util.addUrl + Util.dictionaryToString(args);
+		
+		// Requisição para criação de evento
 		HttpWebRequest createEventRequest = new HttpWebRequest(this,
 				createEventUrl) {
 
@@ -91,18 +116,18 @@ public class EventCreationActivity extends Activity {
 					success = jsonObj.optString("success");
 					Log.i("Success", successString);
 					Log.i("Event Creation Success", success);
+					callDetailsActivity();
 				} catch (JSONException jsonExcep) {
 					Log.e("Erro", "JSON", jsonExcep);
 				}
 			}
 		};
 		createEventRequest.execute();
-		callDetailsActivity();
 	}
 
+	// Chama os detalhes do evento que acabou de ser criado
 	private void callDetailsActivity() {
 		if (success == "true") {
-			// Chama os detalhes do evento
 			Intent intent = new Intent(getApplicationContext(),
 					EventActivity.class);
 			intent.putExtra("eventTitle", "Runners");
