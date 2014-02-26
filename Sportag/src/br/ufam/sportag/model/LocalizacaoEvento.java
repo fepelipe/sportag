@@ -1,7 +1,9 @@
 
 package br.ufam.sportag.model;
 
-public class LocalizacaoEvento
+import java.io.Serializable;
+
+public class LocalizacaoEvento implements Serializable
 {
 	private int id;
 	private double latitude;

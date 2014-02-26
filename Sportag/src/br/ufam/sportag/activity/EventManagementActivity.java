@@ -1,6 +1,10 @@
 package br.ufam.sportag.activity;
 
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import org.json.JSONArray;
@@ -22,8 +26,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import br.ufam.sportag.R;
 import br.ufam.sportag.Util;
 import br.ufam.sportag.adapter.AdapterListView;
@@ -50,6 +56,8 @@ public class EventManagementActivity extends FragmentActivity implements
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	ViewPager mViewPager;
+
+	public static AdapterListView<Evento> adapterListEvent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +192,7 @@ public class EventManagementActivity extends FragmentActivity implements
 	 * A dummy fragment representing a section of the app, but that simply
 	 * displays dummy text.
 	 */
-	public static class DummySectionFragment extends Fragment {
+	public static class DummySectionFragment extends Fragment implements Serializable {
 		/**
 		 * The fragment argument representing the section number for this
 		 * fragment.
@@ -206,7 +214,7 @@ public class EventManagementActivity extends FragmentActivity implements
 			
 			ViewPager myViewPager = ((EventManagementActivity) getActivity()).mViewPager;
 			
-			AdapterListView<Evento> adapterListEvent = new AdapterListView<Evento>(
+			adapterListEvent = new AdapterListView<Evento>(
 					getActivity(), R.layout.item_list_events, listaEventos) {
 
 				@Override
@@ -223,6 +231,27 @@ public class EventManagementActivity extends FragmentActivity implements
 			};
 
 			listEvent.setAdapter(adapterListEvent);
+			listEvent.setOnItemClickListener(new OnItemClickListener()
+			{
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3)
+				{
+					if(adapterListEvent != null)
+					{
+						Evento evento = (Evento) adapterListEvent.getItem(arg2);
+						Intent intent = new Intent(getActivity(), EventActivity.class);
+						intent.putExtra("latitude", evento.getLocalizacaoEvento().getLatitude());
+						intent.putExtra("longitude", evento.getLocalizacaoEvento().getLongitude());
+						intent.putExtra("nome", evento.getNome());
+						intent.putExtra("visivel", evento.isVisivel());
+						intent.putExtra("dataHora", evento.getDataHora());
+						intent.putExtra("nomeLocal", evento.getLocalizacaoEvento().getNomeLocal());
+						
+						startActivity(intent);
+					}					
+				}
+			});
 			
 			// Criar listaEventos diferente para cada seção
 			switch (myViewPager.getCurrentItem()) {
@@ -272,11 +301,16 @@ public class EventManagementActivity extends FragmentActivity implements
 						{
 							final JSONObject eventoObj = arrayObj.getJSONObject(i);
 							
+							String dataHora = eventoObj.optString("evento.dataHora");
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US);
+							final Date dataHoraObj = dateFormat.parse(dataHora);
+							
 							Evento evento = new Evento()
 							{{
 								setId(eventoObj.getInt("evento.id"));
 								setNome(eventoObj.getString("evento.nome"));
 								setVisivel(eventoObj.getInt("evento.visivel") == 1);
+								setDataHora(dataHoraObj);
 								setCriador(user1);
 								setEsporte(sport1);
 								setLocalizacaoEvento(local);
@@ -290,11 +324,18 @@ public class EventManagementActivity extends FragmentActivity implements
 					{
 						Log.e("Erro", "JSON", e);
 					}
+					catch (ParseException e)
+					{
+						Log.e("Erro", "Date Parsing", e);
+					}
+					
+					
 				}
 			}; 
 			
 			webRequest.execute();
 		}
 	}
+
 
 }

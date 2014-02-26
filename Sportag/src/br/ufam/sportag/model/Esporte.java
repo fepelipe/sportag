@@ -1,7 +1,9 @@
 
 package br.ufam.sportag.model;
 
-public class Esporte
+import java.io.Serializable;
+
+public class Esporte implements Serializable
 {
 	private int id;
 	private String nome;

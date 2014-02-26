@@ -1,9 +1,10 @@
 
 package br.ufam.sportag.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Mensagem
+public class Mensagem implements Serializable
 {
 	private int id;
 	private Date dataHora;

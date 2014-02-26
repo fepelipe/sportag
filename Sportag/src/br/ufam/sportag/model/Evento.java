@@ -1,30 +1,44 @@
 
 package br.ufam.sportag.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Evento
+public class Evento implements Serializable
 {
 	private int id;
 	private String nome;
 	private boolean visivel;
 	private Esporte esporte;
+	private Date dataHora;
+
 	private LocalizacaoEvento localizacaoEvento;
 	private Usuario criador;
-	private ArrayList<Mensagem> listaComentarios;
+//	private ArrayList<Mensagem> listaComentarios;
 	
-	public ArrayList<Mensagem> getListaMensagens()
+//	public ArrayList<Mensagem> getListaMensagens()
+//	{
+//		if(listaComentarios == null)
+//			listaComentarios = new ArrayList<Mensagem>();
+//		return listaComentarios;
+//	}
+
+//	public void setListaMensagens(ArrayList<Mensagem> listaMensagens)
+//	{
+//		this.listaComentarios = listaMensagens;
+//	}
+
+	public Date getDataHora()
 	{
-		if(listaComentarios == null)
-			listaComentarios = new ArrayList<Mensagem>();
-		return listaComentarios;
+		return dataHora;
 	}
 
-	public void setListaMensagens(ArrayList<Mensagem> listaMensagens)
+	public void setDataHora(Date dataHora)
 	{
-		this.listaComentarios = listaMensagens;
+		this.dataHora = dataHora;
 	}
-
+	
 	public int getId()
 	{
 		return id;
