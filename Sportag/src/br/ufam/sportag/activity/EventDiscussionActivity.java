@@ -41,14 +41,17 @@ public class EventDiscussionActivity extends Activity {
 		setContentView(R.layout.activity_event_discussion);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		criarDadosFalsos();
+		obterDados();
 		mostrarListaComentarios();
 	}
 
-	private void criarDadosFalsos()
+	private void obterDados()
 	{
-		usuario = new Usuario() {{ setNome("Richard"); setId_foursquare(30004723); }};
-		evento = new Evento() {{ setNome("Futebol com amigos!"); setId(1); }};
+		//O evento selecionado na lista de eventos
+		evento = (Evento) getIntent().getExtras().getSerializable("evento");
+		
+		//O usuário que está logado no aplicativo
+		usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 	}
 
 	@Override
@@ -88,36 +91,31 @@ public class EventDiscussionActivity extends Activity {
 			{	
 				try
 				{
-					//@TODO: Informações de usuário e de evento não vem com os comentários.
 					JSONArray arrayComentarios = new JSONArray(dataReceived);
 					for(int index=0; index<arrayComentarios.length(); index++)
 					{
-						final JSONObject objComentario = arrayComentarios.getJSONObject(index);
-						String dataHora = objComentario.optString("dataHora");
+						final JSONObject eventoJSONObj = arrayComentarios.getJSONObject(index);
+						String dataHora = eventoJSONObj.optString("comentario.dataHora");
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale.US);
 						final Date dataHoraObj = dateFormat.parse(dataHora);
-						final Usuario ownerComentario = new Usuario()
-						{{ 
-							setId_foursquare(objComentario.optInt("id_foursquare"));
-							setNome(objComentario.optString("nome"));
-							setFotoPrefix(objComentario.optString("fotoPreffix"));
-							setFotoSuffix(objComentario.optString("fotoSuffix"));
-							setLatitude(objComentario.optDouble("latitude"));
-							setLongitude(objComentario.optDouble("longitude"));
-						}};
 						
-						Comentario comentario = new Comentario(){{
-							setId(objComentario.optInt("id"));
-							setDataHora(dataHoraObj);
-							setConteudo(objComentario.optString("conteudo"));
-							setUsuario(ownerComentario);
-							setEvento(evento);
-						}};
+						final Usuario usuario = new Usuario();
+						usuario.setId_foursquare(eventoJSONObj.getInt("usuario.id_foursquare"));
+						usuario.setNome(eventoJSONObj.getString("usuario.nome"));
+						usuario.setFotoPrefix(eventoJSONObj.getString("usuario.fotoPrefix"));
+						usuario.setFotoSuffix(eventoJSONObj.getString("usuario.fotoSuffix"));
+						
+						Comentario comentario = new Comentario();
+						comentario.setId(eventoJSONObj.optInt("comentario.id"));
+						comentario.setDataHora(dataHoraObj);
+						comentario.setConteudo(eventoJSONObj.optString("comentario.conteudo"));
+						comentario.setUsuario(usuario);
+						comentario.setEvento(evento);
 						
 						listaComentarios.add(comentario);
 						listAdapter.notifyDataSetChanged();
 					}
-						
+					
 				} catch (JSONException e)
 				{
 					Log.e("Erro", "JSON", e);
@@ -132,14 +130,12 @@ public class EventDiscussionActivity extends Activity {
 	
 	public void postarComentario(final Comentario comentario)
 	{
-		HashMap<String, Object> args = new HashMap<String, Object>()
-		{{
-			put("type", "comentario");
-			put("dataHora", DateFormat.format("yyyy-MM-dd kk:mm:ss", comentario.getDataHora()));
-			put("conteudo", comentario.getConteudo());
-			put("evento_id", comentario.getEvento().getId());
-			put("usuario_id", comentario.getUsuario().getId_foursquare());
-		}};
+		HashMap<String, Object> args = new HashMap<String, Object>();
+		args.put("type", "comentario");
+		args.put("dataHora", DateFormat.format("yyyy-MM-dd kk:mm:ss", comentario.getDataHora()));
+		args.put("conteudo", comentario.getConteudo());
+		args.put("evento_id", comentario.getEvento().getId());
+		args.put("usuario_id", comentario.getUsuario().getId_foursquare());
 		
 		String requestUrl = Util.sportagServerUrl + "add.php" + Util.dictionaryToString(args);
 		HttpWebRequest webRequest = new HttpWebRequest(this, requestUrl, "Postando comentário...")

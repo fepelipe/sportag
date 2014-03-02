@@ -2,7 +2,6 @@
 package br.ufam.sportag.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Evento implements Serializable
@@ -15,6 +14,7 @@ public class Evento implements Serializable
 
 	private LocalizacaoEvento localizacaoEvento;
 	private Usuario criador;
+	
 //	private ArrayList<Mensagem> listaComentarios;
 	
 //	public ArrayList<Mensagem> getListaMensagens()

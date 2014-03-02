@@ -1,7 +1,6 @@
 
 package br.ufam.sportag.activity;
 
-import java.util.Date;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,8 +31,7 @@ public class EventActivity extends Activity
 		setContentView(R.layout.activity_event);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		// eventTitle = getIntent().getExtras().getString("eventTitle");
-		evento = (Evento) getIntent().getExtras().get("evento");
+		evento = (Evento) getIntent().getExtras().getSerializable("evento");
 		
 		addEventDetails();
 	}
@@ -48,11 +46,11 @@ public class EventActivity extends Activity
 		
 		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_event)).getMap();
 		
-		String dataHora = (String) DateFormat.format("yyyy-MM-dd kk:mm:ss", (Date) getIntent().getExtras().get("dataHora"));
-		int visibilidade = getIntent().getExtras().getInt("visivel");
-		String nomeEvento = getIntent().getExtras().getString("nome"), nomeLocal = getIntent().getExtras().getString("nomeLocal");
-		double latit = getIntent().getExtras().getDouble("latitude");
-		double longit = getIntent().getExtras().getDouble("longitude");		
+		String dataHora = (String) DateFormat.format("yyyy-MM-dd kk:mm:ss", evento.getDataHora());
+		int visibilidade = evento.isVisivel() ? 1 : 0;
+		String nomeEvento = evento.getNome(), nomeLocal = evento.getLocalizacaoEvento().getNomeLocal();
+		double latit = evento.getLocalizacaoEvento().getLatitude();
+		double longit = evento.getLocalizacaoEvento().getLongitude();	
 		
 		tvEventName.setText(nomeEvento);
 		tvEventPrivacy.setText(visibilidade == 1 ? "Público" : "Privado");
@@ -76,7 +74,8 @@ public class EventActivity extends Activity
 	
 	public void callEventDiscussionActivity(View view)
 	{
-		Intent intent = new Intent(this, EventDiscussionActivity.class);
+		Intent intent = new Intent(getApplicationContext(), EventDiscussionActivity.class);
+		intent.putExtras(getIntent().getExtras());
 		startActivity(intent);
 	}
 }

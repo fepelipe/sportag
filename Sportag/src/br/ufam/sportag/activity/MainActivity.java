@@ -13,13 +13,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import br.ufam.sportag.R;
-import br.ufam.sportag.RegisterResponse;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.asynctask.UserService;
+import br.ufam.sportag.model.Usuario;
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
-public class MainActivity extends Activity implements RegisterResponse {
+public class MainActivity extends Activity  {
 
 	private String tokenUrl;
 	private String code;
@@ -28,8 +28,11 @@ public class MainActivity extends Activity implements RegisterResponse {
 	private static final String CLIENT_ID = "2WDE5IGFUJ2SUTOOS0MFTAZHQQFRZ0WOUDT2FKXWEQIDCF5U";
 	private static final String CLIENT_SECRET = "SFOGBEQSUQIOG212M1YJVCRIXP4CA0SJUA5CWEQV1LTOBW1E";
 	private SharedPreferences strings;
-	
 	public static Context ApplicationContext;
+	
+	// Usuário logado no app
+	// Sempre cheque se é nulo antes de usar
+	private Usuario usuario;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +105,6 @@ public class MainActivity extends Activity implements RegisterResponse {
 		}
 	}
 
-	@Override
 	public void tokenReceived(String token) {
 
 		SharedPreferences.Editor editor = strings.edit();
@@ -112,9 +114,10 @@ public class MainActivity extends Activity implements RegisterResponse {
 
 		UserService userRegister = new UserService(this, token)
 		{
-			public void onSuccess(String firstName)
+			public void onSuccess(Usuario usuario)
 			{
-				registerSuccess(firstName);
+				MainActivity.this.usuario = usuario;
+				registerSuccess(usuario);
 			}
 		};
 		
@@ -126,17 +129,18 @@ public class MainActivity extends Activity implements RegisterResponse {
 		super.onPause();
 	}
 	
-	@Override
-	public void registerSuccess(String userFirstName) {
+	public void registerSuccess(Usuario usuario) {
 		SharedPreferences.Editor editor = strings.edit();
-		editor.putString("userFirstName", userFirstName);
+		editor.putInt("idUser", usuario.getId_foursquare());
+		editor.putString("userFirstName", usuario.getNome());
 		editor.commit();
-		Log.i("First Name Armazenado", userFirstName);
+		Log.i("First Name Armazenado", usuario.getNome());
 		callMapActivity();
 	}
 
 	private void callMapActivity() {
 		Intent intent = new Intent(this, MapActivity.class);
+		intent.putExtra("usuario", usuario);
 		startActivity(intent);
 		this.finish();
 	}
