@@ -20,5 +20,8 @@
     <!-- Event Management -->
     <dimen name="img_eventSport_dimen">60dp</dimen>
     <dimen name="tv_eventTitle_marginLeft">12dp</dimen>
-    
+
+    <!-- Event Creation -->
+    <dimen name="tv_eventCreationDetails_marginTop">12dp</dimen>
+
 </resources>

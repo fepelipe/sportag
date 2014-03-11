@@ -1,4 +1,4 @@
-package br.ufam.sportag;
+package br.ufam.sportag.util;
 
 import br.ufam.sportag.model.Usuario;
 

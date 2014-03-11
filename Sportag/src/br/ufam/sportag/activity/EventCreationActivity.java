@@ -14,22 +14,23 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 import br.ufam.sportag.R;
-import br.ufam.sportag.Util;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventDateDialog;
 import br.ufam.sportag.dialog.EventTimeDialog;
+import br.ufam.sportag.model.Evento;
+import br.ufam.sportag.util.Util;
 
 public class EventCreationActivity extends Activity {
 	private String success;
-	EditText editEventName;
-	Spinner sportsSpinner;
-	Spinner locationSpinner;
-	Spinner privacySpinner;
-	EventDateDialog dateDialog = new EventDateDialog();
-	EventTimeDialog timeDialog = new EventTimeDialog();
-
+	private EditText editEventName;
+	private Spinner sportsSpinner;
+	private Spinner locationSpinner;
+	private Spinner privacySpinner;
+	private EventDateDialog dateDialog = new EventDateDialog();
+	private EventTimeDialog timeDialog = new EventTimeDialog();
+	private Evento eventoCriado = new Evento();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -130,7 +131,7 @@ public class EventCreationActivity extends Activity {
 		if (success == "true") {
 			Intent intent = new Intent(getApplicationContext(),
 					EventActivity.class);
-			intent.putExtra("eventTitle", "Runners");
+			intent.putExtra("eventTitle", eventoCriado);
 			startActivity(intent);
 			this.finish();
 		}

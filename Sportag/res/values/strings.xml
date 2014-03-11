@@ -57,5 +57,7 @@
     <string name="action_add_event">Adicionar evento</string>
     <string name="title_activity_event_creation">Criar um evento</string>
     <string name="atualizar">Atualizar</string>
+    <string name="btn_eventInvitation">Convidar amigos</string>
+    <string name="eventAttendants">Quem vai</string>
 
 </resources>

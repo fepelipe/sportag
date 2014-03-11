@@ -2,7 +2,8 @@
 package br.ufam.sportag.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
+import android.graphics.Bitmap;
 
 public class Usuario implements Serializable
 {
@@ -12,6 +13,7 @@ public class Usuario implements Serializable
 	private String fotoSuffix;
 	private double latitude;
 	private double longitude;
+	private Bitmap avatar;
 	
 //	private ArrayList<Evento> listaEventosConfirmados;
 //	private ArrayList<Evento> listaEventosConvidado;
@@ -111,6 +113,14 @@ public class Usuario implements Serializable
 	public void setLongitude(double longitude)
 	{
 		this.longitude = longitude;
+	}
+
+	public Bitmap getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(Bitmap avatar) {
+		this.avatar = avatar;
 	}
 	
 }

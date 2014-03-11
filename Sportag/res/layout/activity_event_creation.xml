@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/spinner_sport"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:text="Localização" />
 
         <Spinner
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/spinner_location"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:text="Visibilidade" />
 
         <Spinner
@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/spinner_privacy"
+            android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:text="Sem data marcada" />
 
         <TextView
@@ -90,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_label_eventDate"
+            android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:text="Sem hora marcada" />
 
         <Button
@@ -98,6 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_label_eventTime"
+            android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:onClick="callDateDialog"
             android:text="Data" />
 

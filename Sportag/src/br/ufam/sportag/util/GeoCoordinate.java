@@ -1,4 +1,4 @@
-package br.ufam.sportag;
+package br.ufam.sportag.util;
 
 import android.content.Context;
 import android.location.Criteria;

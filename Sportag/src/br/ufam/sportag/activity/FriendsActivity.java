@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,28 +24,40 @@ public class FriendsActivity extends Activity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friends);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		makeListFriends();
 	}
 
-	private void makeListFriends()
-	{
-		ArrayList<Usuario> listaAmigos = new ArrayList<Usuario>()
-		{{
-			add(new Usuario(){{ setNome("Amigo1"); }});
-			add(new Usuario(){{ setNome("Amigo2"); }});
-			add(new Usuario(){{ setNome("Amigo3"); }});	
-		}};
-		
-		AdapterListView<Usuario> adapter = new AdapterListView<Usuario>(this, R.layout.item_list_friends, listaAmigos)
-		{
-			public void setItemContentLayout(View view, Usuario item)
+	private void makeListFriends() {
+		ArrayList<Usuario> listaAmigos = new ArrayList<Usuario>() {
 			{
-				((TextView) view.findViewById(R.id.friendUserNameListFriend)).setText(item.getNome());				
+				add(new Usuario() {
+					{
+						setNome("Amigo1");
+					}
+				});
+				add(new Usuario() {
+					{
+						setNome("Amigo2");
+					}
+				});
+				add(new Usuario() {
+					{
+						setNome("Amigo3");
+					}
+				});
 			}
 		};
-		
-		ListView mainList = (ListView)findViewById(R.id.list_friends);
+
+		AdapterListView<Usuario> adapter = new AdapterListView<Usuario>(this,
+				R.layout.item_list_friends, listaAmigos) {
+			public void setItemContentLayout(View view, Usuario item) {
+				((TextView) view.findViewById(R.id.friendUserNameListFriend))
+						.setText(item.getNome());
+			}
+		};
+
+		ListView mainList = (ListView) findViewById(R.id.list_friends);
 		mainList.setAdapter(adapter);
 		mainList.setOnItemClickListener(this);
 	}
@@ -56,10 +70,18 @@ public class FriendsActivity extends Activity implements OnItemClickListener {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-	{
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Intent intent = new Intent(this, FriendChatActivity.class);
 		startActivity(intent);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

@@ -7,9 +7,9 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Paint.Join;
 import android.util.Log;
-import br.ufam.sportag.Util;
 import br.ufam.sportag.model.User;
 import br.ufam.sportag.model.Usuario;
+import br.ufam.sportag.util.Util;
 
 public abstract class UserService
 {

@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,75 +8,111 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".EventActivity" >
 
-    <fragment
-        android:id="@+id/map_event"
-        android:name="com.google.android.gms.maps.MapFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/map_eventLocation_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+    <RelativeLayout
+        android:id="@+id/layout_event"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/tv_eventName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/map_event"
-        android:layout_below="@+id/map_event"
-        android:layout_marginTop="@dimen/tv_eventTitle_marginTop"
-        android:text="@string/eventName"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <fragment
+            android:id="@+id/map_event"
+            android:name="com.google.android.gms.maps.MapFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/map_eventLocation_height"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true" />
 
-    <TextView
-        android:id="@+id/tv_eventPrivacy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_eventName"
-        android:layout_below="@+id/tv_eventName"
-        android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
-        android:text="@string/eventPrivacy" />
-
-    <TextView
-        android:id="@+id/tv_eventAddress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_eventPrivacy"
-        android:layout_below="@+id/tv_eventPrivacy"
-        android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
-        android:text="@string/eventAddress" />
-
-    <TextView
-        android:id="@+id/tv_eventDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tv_eventAddress"
-        android:layout_below="@+id/tv_eventAddress"
-        android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
-        android:text="@string/eventDate" />
-
-    <GridLayout
-        android:id="@+id/layout_eventAttendants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/tv_eventDate"
-        android:layout_below="@id/tv_eventDate"
-        android:layout_marginTop="@dimen/layout_eventAttendants_margin" >
-
-        <Button
-            android:id="@+id/btn_eventMoreAttendants"
+        <Switch
+            android:id="@+id/switch_join"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/btn_profileMoreSports"
-            android:visibility="invisible"/>
-    </GridLayout>
+            android:layout_below="@+id/map_event"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/tv_eventTitle_marginTop"
+            android:textOff="Participar"
+            android:textOn="Participando" />
 
-    <Button
-        android:id="@+id/btn_eventDiscussion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/btn_eventDiscussion"
-        android:onClick="callEventDiscussionActivity"/>
+        <TextView
+            android:id="@+id/tv_eventName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/map_event"
+            android:layout_below="@id/switch_join"
+            android:layout_marginTop="@dimen/tv_eventTitle_marginTop"
+            android:text="@string/eventName"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tv_eventPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_eventName"
+            android:layout_below="@+id/tv_eventName"
+            android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
+            android:text="@string/eventPrivacy" />
+
+        <TextView
+            android:id="@+id/tv_eventAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_eventPrivacy"
+            android:layout_below="@+id/tv_eventPrivacy"
+            android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
+            android:text="@string/eventAddress" />
+
+        <TextView
+            android:id="@+id/tv_eventDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_eventAddress"
+            android:layout_below="@+id/tv_eventAddress"
+            android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
+            android:text="@string/eventDate" />
+
+        <TextView
+            android:id="@+id/tv_eventAttendants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_eventDate"
+            android:layout_below="@id/tv_eventDate"
+            android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
+            android:text="@string/eventAttendants"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <GridLayout
+            android:id="@+id/grid_attendants"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_eventAttendants"
+            android:useDefaultMargins="true" >
+        </GridLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_eventActions"
+            style="@android:attr/buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/grid_attendants"
+            android:layout_marginTop="@dimen/tv_eventDetails_marginTop"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/btn_eventInvitation"
+                style="@android:attr/buttonBarButtonStyle"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="callEventInvitationDialog"
+                android:text="@string/btn_eventInvitation" />
+
+            <Button
+                android:id="@+id/btn_eventDiscussion"
+                style="@android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="callEventDiscussionActivity"
+                android:text="@string/btn_eventDiscussion" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</ScrollView>

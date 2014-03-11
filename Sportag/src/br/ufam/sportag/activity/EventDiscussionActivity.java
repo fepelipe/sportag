@@ -21,12 +21,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.ufam.sportag.R;
-import br.ufam.sportag.Util;
 import br.ufam.sportag.adapter.AdapterListView;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.model.Comentario;
 import br.ufam.sportag.model.Evento;
 import br.ufam.sportag.model.Usuario;
+import br.ufam.sportag.util.Util;
 
 public class EventDiscussionActivity extends Activity {
 
