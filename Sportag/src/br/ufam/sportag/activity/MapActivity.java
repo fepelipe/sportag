@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +29,6 @@ import br.ufam.sportag.model.LocalizacaoEvento;
 import br.ufam.sportag.model.Usuario;
 import br.ufam.sportag.util.GeoCoordinate;
 import br.ufam.sportag.util.Util;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -45,7 +44,7 @@ public class MapActivity extends Activity {
 	private LatLng userLocation;
 
 	private ArrayList<Evento> allEventos = new ArrayList<Evento>();
-	private HashMap<Marker, Evento> titulosEventos = new HashMap<Marker, Evento>();
+	private Map<Marker, Evento> titulosEventos = new HashMap<Marker, Evento>();
 
 	private Usuario usuario;
 
