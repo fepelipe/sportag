@@ -5,28 +5,38 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import br.ufam.sportag.util.Util;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
+public abstract class HttpWebRequest extends AsyncTask<Void, Void, Object>
 {
 	Context contexto;
 	ProgressDialog progressDialog;
 	private String urlString;
 	private String loadingMessage;
+	private boolean isBitmap;
 //	private HttpURLConnection localHttpURLConnection;
+	
+	public HttpWebRequest(Context paramContext, String urlString, boolean isBitmap)
+	{
+		this.loadingMessage = "Carregando...";
+		this.contexto = paramContext;
+		this.urlString = urlString;
+		this.isBitmap = isBitmap;
+	}
 	
 	public HttpWebRequest(Context paramContext, String urlString)
 	{
 		this.loadingMessage = "Carregando...";
 		this.contexto = paramContext;
 		this.urlString = urlString;
+		this.isBitmap = false;
 	}
 	
 	public HttpWebRequest(Context paramContext, String urlString,
@@ -35,9 +45,10 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
 		this.loadingMessage = loadingMessage;
 		this.contexto = paramContext;
 		this.urlString = urlString;
+		this.isBitmap = false;
 	}
 	
-	protected String doInBackground(Void... paramVarArgs)
+	protected Object doInBackground(Void... paramVarArgs)
 	{
 		try
 		{
@@ -47,8 +58,12 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
 			localHttpURLConnection.setRequestMethod("GET");
 			localHttpURLConnection.setDoInput(true);
 			localHttpURLConnection.connect();
-			String str = Util.streamToString(localHttpURLConnection.getInputStream());
-			return str;
+			
+			if(!isBitmap)
+				return Util.streamToString(localHttpURLConnection.getInputStream());
+			else
+				return BitmapFactory.decodeStream(localHttpURLConnection.getInputStream());
+			
 		} catch (MalformedURLException localMalformedURLException)
 		{
 			Log.d("ErroMalFormed", "Erro", localMalformedURLException);
@@ -56,6 +71,7 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
 		{
 			Log.d("ErroIO", "Erro", localIOException);
 		}
+		
 		return null;
 	}
 	
@@ -63,7 +79,7 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
 	{
 	}
 	
-	protected void onPostExecute(String paramString)
+	protected void onPostExecute(Object paramString)
 	{
 		super.onPostExecute(paramString);
 		try
@@ -74,7 +90,11 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
 		}
 		if (paramString != null)
 		{
-			onSuccess(paramString);
+			if(paramString.getClass() == String.class)
+				onSuccess( (String) paramString );
+			else
+				onSuccess( (Object) paramString );
+			
 			return;
 		}
 		onError();
@@ -97,5 +117,6 @@ public abstract class HttpWebRequest extends AsyncTask<Void, Void, String>
 		});
 	}
 	
-	public abstract void onSuccess(String paramString);
+	public void onSuccess(String stringReceived){}
+	public void onSuccess(Object objReceived){}
 }
