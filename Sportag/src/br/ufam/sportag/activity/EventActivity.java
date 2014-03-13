@@ -2,6 +2,7 @@ package br.ufam.sportag.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,7 +75,18 @@ public class EventActivity extends Activity {
 
 			@Override
 			public void onSuccess(String paramString) {
-				setarSwitchListener(switchJoin);
+				// TODO Identificar se o usuário está participando ou não
+				JSONArray arrayObj;
+				try {
+					arrayObj = new JSONArray(paramString);
+					if (!arrayObj.toString().equals("[]")) {
+						switchJoin.setChecked(true);	
+					}
+					setarSwitchListener(switchJoin);
+				} catch (JSONException jsonExcep)
+				{
+					Log.e("Erro", "JSON", jsonExcep);
+				};
 			}
 		};
 
@@ -170,7 +182,7 @@ public class EventActivity extends Activity {
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 14));
 
 		// Adiciona imagens dos participantes no grid
-		addAttendantsToGrid();
+		// addAttendantsToGrid();
 	}
 
 	private void addAttendantsToGrid() {
@@ -187,14 +199,14 @@ public class EventActivity extends Activity {
 				ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
 				parsingUsuarios(listaUsuarios, paramString);
 				GridLayout grid = (GridLayout) findViewById(R.id.grid_attendants);
-				
-				for (Usuario usuario : listaUsuarios){
+
+				for (Usuario usuario : listaUsuarios) {
 					ImageView imageView = new ImageView(getApplicationContext());
 					imageView.setLayoutParams(new LayoutParams(32, 32));
 					imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 					imageView.setPadding(5, 5, 5, 5);
 					imageView.setImageBitmap(usuario.getAvatar());
-					
+
 					grid.addView(imageView);
 				}
 			}
