@@ -8,13 +8,13 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
 
-public class EventDateDialog extends DialogFragment implements
+public abstract class EventDateDialog extends DialogFragment implements
 		DatePickerDialog.OnDateSetListener {
-	Calendar c;
+	private Calendar c;
 	public int year;
 	public int month;
 	public int day;
-	
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Use the current date as the default date in the picker
@@ -31,5 +31,11 @@ public class EventDateDialog extends DialogFragment implements
 		this.year = year;
 		this.month = month;
 		this.day = day;
+		String dateText = "Marcado para: " + String.valueOf(this.day) + "/"
+				+ String.valueOf(this.month) + "/" + String.valueOf(this.year);
+		onSuccess(dateText);
+	}
+
+	public void onSuccess(String dateText) {
 	}
 }

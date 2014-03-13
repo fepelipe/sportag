@@ -66,7 +66,6 @@ public class MapActivity extends Activity {
 	}
 
 	private void executeAfterUserObtained() {
-		obterListaEventos();
 		addSelfMarker();
 	}
 
@@ -247,6 +246,8 @@ public class MapActivity extends Activity {
 						10));
 				map.addMarker(new MarkerOptions().title(usuario.getNome())
 						.snippet("Usuário").position(userLocation));
+				
+				obterListaEventos();
 			}
 
 			public void onFail(String title, String message) {
@@ -267,7 +268,7 @@ public class MapActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_events:
-			callEventActivity();
+			callEventManagementActivity();
 			return true;
 		case R.id.action_friends:
 			callFriendsActivity();
@@ -276,9 +277,8 @@ public class MapActivity extends Activity {
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
-	//TODO callEventManagementActivity
-	private void callEventActivity() {
+	
+	private void callEventManagementActivity() {
 		Intent intent = new Intent(this, EventManagementActivity.class);
 		intent.putExtras(getIntent().getExtras());
 		intent.putExtra("usuario", usuario);

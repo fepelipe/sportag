@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import br.ufam.sportag.R;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventDateDialog;
@@ -24,13 +25,15 @@ import br.ufam.sportag.util.Util;
 public class EventCreationActivity extends Activity {
 	private String success;
 	private EditText editEventName;
+	private TextView tvDate;
+	private TextView tvTime;
 	private Spinner sportsSpinner;
 	private Spinner locationSpinner;
 	private Spinner privacySpinner;
-	private EventDateDialog dateDialog = new EventDateDialog();
-	private EventTimeDialog timeDialog = new EventTimeDialog();
+	private EventDateDialog dateDialog;
+	private EventTimeDialog timeDialog;
 	private Evento eventoCriado = new Evento();
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,8 +64,24 @@ public class EventCreationActivity extends Activity {
 		privacyAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		privacySpinner.setAdapter(privacyAdapter);
+
+		tvDate = (TextView) findViewById(R.id.tv_eventDate);
+		tvTime = (TextView) findViewById(R.id.tv_eventTime);
 		
-		
+		dateDialog = new EventDateDialog() {
+			@Override
+			public void onSuccess(String dateText) {
+				Log.i("Date", dateText);
+				tvDate.setText(dateText);
+			}
+		};
+		timeDialog = new EventTimeDialog() {
+			@Override
+			public void onSuccess(String timeText) {
+				Log.i("Time", timeText);
+				tvTime.setText(timeText);
+			}
+		};
 	}
 
 	@Override
@@ -86,11 +105,11 @@ public class EventCreationActivity extends Activity {
 				+ dateDialog.day + " " + timeDialog.hour + ":"
 				+ timeDialog.minute + ":00";
 		Log.i("Evento DataHora", datahora);
-		
+
 		// // TODO Tratamento de exceções (campos vazios)
 		// Toast.makeText(getApplicationContext(), "msg msg",
 		// Toast.LENGTH_SHORT).show();
-		
+
 		// Construir URL de requisição para criação de evento no servidor
 		HashMap<String, Object> args = new HashMap<String, Object>() {
 			{
@@ -104,7 +123,7 @@ public class EventCreationActivity extends Activity {
 			}
 		};
 		String createEventUrl = Util.addUrl + Util.dictionaryToString(args);
-		
+
 		// Requisição para criação de evento
 		HttpWebRequest createEventRequest = new HttpWebRequest(this,
 				createEventUrl) {
