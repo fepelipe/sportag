@@ -2,7 +2,6 @@
 package br.ufam.sportag.model;
 
 import java.io.Serializable;
-
 import android.graphics.Bitmap;
 
 public class Usuario implements Serializable
@@ -121,6 +120,17 @@ public class Usuario implements Serializable
 
 	public void setAvatar(Bitmap avatar) {
 		this.avatar = avatar;
+	}
+
+	public static Usuario parseUser(User userObj)
+	{
+		Usuario usuario = new Usuario();
+		usuario.setId_foursquare(userObj.getId());
+		usuario.setNome(userObj.getFirstName());
+		usuario.setFotoPrefix(userObj.getPhotoPrefix());
+		usuario.setFotoSuffix(userObj.getPhotoSuffix());
+		
+		return usuario;
 	}
 	
 }

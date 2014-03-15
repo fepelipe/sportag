@@ -1,21 +1,29 @@
 package br.ufam.sportag.activity;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import org.json.JSONException;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import br.ufam.sportag.R;
 import br.ufam.sportag.adapter.AdapterListView;
+import br.ufam.sportag.asynctask.HttpWebRequest;
+import br.ufam.sportag.model.User;
 import br.ufam.sportag.model.Usuario;
+import br.ufam.sportag.util.Util;
 
 public class FriendsActivity extends Activity implements OnItemClickListener {
 
@@ -25,29 +33,49 @@ public class FriendsActivity extends Activity implements OnItemClickListener {
 		setContentView(R.layout.activity_friends);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		makeListFriends();
+		obterListaAmigos();
 	}
 
-	private void makeListFriends() {
-		ArrayList<Usuario> listaAmigos = new ArrayList<Usuario>() {
+	private void obterListaAmigos()
+	{
+		SharedPreferences strings = getSharedPreferences("strings", MODE_PRIVATE);
+		String token = strings.getString("token", "0");
+		
+		HashMap<String, Object> args = new HashMap<String, Object>();
+		args.put("oauth_token", token);
+		args.put("v", DateFormat.format("yyyyMMdd", new Date()));
+		
+		String urlString = Util.selfDataRequestUrl + "/friends" + Util.dictionaryToString(args );
+		HttpWebRequest friendsRequest = new HttpWebRequest(this, urlString )
+		{
+			@Override
+			public void onSuccess(String stringReceived)
 			{
-				add(new Usuario() {
+				try
+				{
+					Util util = new Util();
+					ArrayList<User> listaUsers = util.getFriends(stringReceived);
+					ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+					for(User userObj : listaUsers)
 					{
-						setNome("Amigo1");
+						listaUsuarios.add(Usuario.parseUser(userObj));
 					}
-				});
-				add(new Usuario() {
-					{
-						setNome("Amigo2");
-					}
-				});
-				add(new Usuario() {
-					{
-						setNome("Amigo3");
-					}
-				});
+					
+					makeListFriends(listaUsuarios);
+					
+				} catch (JSONException e)
+				{
+					Log.e("JSON", "Parsing friends from JSON", e);
+				}
+				
 			}
-		};
+		}; 
+		
+		friendsRequest.execute();
+	}
+
+	private void makeListFriends(ArrayList<Usuario> listaAmigos) 
+	{
 
 		AdapterListView<Usuario> adapter = new AdapterListView<Usuario>(this,
 				R.layout.item_list_friends, listaAmigos) {

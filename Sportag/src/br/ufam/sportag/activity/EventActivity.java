@@ -189,7 +189,7 @@ public class EventActivity extends Activity
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 14));
 		
 		// Adiciona imagens dos participantes no grid
-		// addAttendantsToGrid();
+		addAttendantsToGrid();
 	}
 	
 	private void addAttendantsToGrid()
