@@ -100,14 +100,7 @@ public class FriendsActivity extends Activity implements OnItemClickListener
 								usuario.setNome(userObj.getString("usuario.nome"));
 								usuario.setFotoPrefix(userObj.getString("usuario.fotoPrefix"));
 								usuario.setFotoSuffix(userObj.getString("usuario.fotoSuffix"));
-								
-								if(!userObj.getString("usuario.avatar").equals(""))
-								{
-									byte[] decodedString = Base64.decode(userObj.getString("usuario.avatar"), Base64.DEFAULT);
-									Bitmap avatar = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-									usuario.setAvatar(avatar);
-								}								
-								
+								usuario.setAvatarString64(userObj.optString("usuario.avatar"));
 								listaUsuarios.add(usuario);
 							}
 							

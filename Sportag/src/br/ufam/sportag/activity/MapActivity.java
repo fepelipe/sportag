@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.WeakHashMap;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -98,13 +97,14 @@ public class MapActivity extends Activity
 				{
 					arrayObj = new JSONArray(jsonString);
 					
-					final JSONObject eventoJSONObj = arrayObj.getJSONObject(0);
+					final JSONObject usuarioObj = arrayObj.getJSONObject(0);
 					
 					usuario = new Usuario();
-					usuario.setId_foursquare(eventoJSONObj.getInt("usuario.id_foursquare"));
-					usuario.setNome(eventoJSONObj.getString("usuario.nome"));
-					usuario.setFotoPrefix(eventoJSONObj.getString("usuario.fotoPrefix"));
-					usuario.setFotoSuffix(eventoJSONObj.getString("usuario.fotoSuffix"));
+					usuario.setId_foursquare(usuarioObj.getInt("usuario.id_foursquare"));
+					usuario.setNome(usuarioObj.getString("usuario.nome"));
+					usuario.setFotoPrefix(usuarioObj.getString("usuario.fotoPrefix"));
+					usuario.setFotoSuffix(usuarioObj.getString("usuario.fotoSuffix"));
+					usuario.setAvatarString64(usuarioObj.optString("usuario.avatar"));
 					
 					executeAfterUserObtained();
 				} catch (JSONException e)
@@ -227,6 +227,7 @@ public class MapActivity extends Activity
 					if (marker.getSnippet().equals("Usuário"))
 					{
 						Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+						intent.putExtra("usuario", usuario);
 						startActivity(intent);
 					} else
 					{
@@ -235,7 +236,6 @@ public class MapActivity extends Activity
 						Log.i("Evento Clicado", eventoClique.getNome());
 						
 						Intent intent = new Intent(getApplicationContext(), EventActivity.class);
-						intent.putExtras(getIntent().getExtras());
 						intent.putExtra("usuario", usuario);
 						intent.putExtra("evento", eventoClique);
 						startActivity(intent);
