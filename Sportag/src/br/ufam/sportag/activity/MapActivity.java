@@ -110,6 +110,7 @@ public class MapActivity extends Activity
 				} catch (JSONException e)
 				{
 					Log.e("JSON", "Parsing while getting current user.", e);
+					Log.e("JSON", jsonString);	
 				}
 				
 			}
