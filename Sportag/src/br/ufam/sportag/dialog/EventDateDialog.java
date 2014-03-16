@@ -15,14 +15,15 @@ public abstract class EventDateDialog extends DialogFragment implements
 	public int month;
 	public int day;
 
-	@Override
-	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		// Use the current date as the default date in the picker
+	public EventDateDialog() {
 		c = Calendar.getInstance();
 		year = c.get(Calendar.YEAR);
 		month = c.get(Calendar.MONTH);
 		day = c.get(Calendar.DAY_OF_MONTH);
-
+	}
+	
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Create a new instance of DatePickerDialog and return it
 		return new DatePickerDialog(getActivity(), this, year, month, day);
 	}
@@ -32,7 +33,7 @@ public abstract class EventDateDialog extends DialogFragment implements
 		this.month = month;
 		this.day = day;
 		String dateText = "Marcado para: " + String.valueOf(this.day) + "/"
-				+ String.valueOf(this.month) + "/" + String.valueOf(this.year);
+				+ String.valueOf(this.month + 1) + "/" + String.valueOf(this.year);
 		onSuccess(dateText);
 	}
 

@@ -24,8 +24,6 @@
             android:ems="10"
             android:hint="Nome do Evento"
             android:maxLines="1" >
-
-            <requestFocus />
         </EditText>
 
         <TextView
@@ -53,12 +51,22 @@
             android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:text="Localização" />
 
+        <AutoCompleteTextView
+            android:id="@+id/autocomplete_Location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/tv_label_spinnerLocation"
+            android:ems="10"
+            android:hint="Ex.: Ponta Negra" >
+        </AutoCompleteTextView>
+
         <Spinner
             android:id="@+id/spinner_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/tv_label_spinnerLocation" />
+            android:layout_below="@+id/autocomplete_Location" />
 
         <TextView
             android:id="@+id/tv_label_spinnerPrivacy"

@@ -1,5 +1,6 @@
 package br.ufam.sportag.activity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONException;
@@ -8,10 +9,13 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -20,6 +24,7 @@ import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventDateDialog;
 import br.ufam.sportag.dialog.EventTimeDialog;
 import br.ufam.sportag.model.Evento;
+import br.ufam.sportag.model.Usuario;
 import br.ufam.sportag.util.Util;
 
 public class EventCreationActivity extends Activity {
@@ -33,11 +38,16 @@ public class EventCreationActivity extends Activity {
 	private EventDateDialog dateDialog;
 	private EventTimeDialog timeDialog;
 	private Evento eventoCriado = new Evento();
+	private String[] locationsArray;
+
+	static Usuario usuario;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_event_creation);
+
+		usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
 		editEventName = (EditText) findViewById(R.id.edt_eventName);
 		sportsSpinner = (Spinner) findViewById(R.id.spinner_sport);
@@ -65,9 +75,9 @@ public class EventCreationActivity extends Activity {
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		privacySpinner.setAdapter(privacyAdapter);
 
-		tvDate = (TextView) findViewById(R.id.tv_eventDate);
-		tvTime = (TextView) findViewById(R.id.tv_eventTime);
-		
+		tvDate = (TextView) findViewById(R.id.tv_label_eventDate);
+		tvTime = (TextView) findViewById(R.id.tv_label_eventTime);
+
 		dateDialog = new EventDateDialog() {
 			@Override
 			public void onSuccess(String dateText) {
@@ -82,6 +92,35 @@ public class EventCreationActivity extends Activity {
 				tvTime.setText(timeText);
 			}
 		};
+
+		final AutoCompleteTextView autoCompleteLocation = (AutoCompleteTextView) findViewById(R.id.autocomplete_Location);
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(null,
+				android.R.layout.simple_list_item_1, locationsArray);
+		autoCompleteLocation.setAdapter(adapter);
+		
+		autoCompleteLocation.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before,
+					int count) {
+				HttpWebRequest locationsRequest = new HttpWebRequest(getApplicationContext(), Util.venuesRequestUrl) {
+					@Override
+					public void onSuccess(String stringReceived) {
+						locationsArray = null;
+						adapter.notifyDataSetChanged();
+					}
+				};
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+		});
 	}
 
 	@Override
@@ -115,11 +154,13 @@ public class EventCreationActivity extends Activity {
 			{
 				put("type", "evento");
 				put("nome", editEventName.getText().toString());
-				put("visivel", "1");
+				put("visivel", String.valueOf(privacySpinner
+						.getSelectedItemPosition()));
 				put("dataHora", datahora);
 				put("localizacao_id", "1");
-				put("esporte_id", "1");
-				put("criador_usuario_id", "30004723");
+				put("esporte_id",
+						String.valueOf(sportsSpinner.getSelectedItemPosition()));
+				put("criador_usuario_id", usuario.getId_foursquare());
 			}
 		};
 		String createEventUrl = Util.addUrl + Util.dictionaryToString(args);

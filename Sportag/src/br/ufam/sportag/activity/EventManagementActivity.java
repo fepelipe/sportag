@@ -53,7 +53,6 @@ public class EventManagementActivity extends FragmentActivity implements
 
 		usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
-
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
@@ -112,6 +111,8 @@ public class EventManagementActivity extends FragmentActivity implements
 
 	private void callCreateEventActivity() {
 		Intent intent = new Intent(this, EventCreationActivity.class);
+		intent.putExtras(getIntent().getExtras());
+		intent.putExtra("usuario", usuario);
 		startActivity(intent);
 	}
 
