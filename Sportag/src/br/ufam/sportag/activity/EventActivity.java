@@ -189,11 +189,13 @@ public class EventActivity extends Activity
 		map.moveCamera(CameraUpdateFactory.newLatLngZoom(eventLocation, 14));
 		
 		// Adiciona imagens dos participantes no grid
-		// addAttendantsToGrid();
+		addAttendantsToGrid();
 	}
 	
 	private void addAttendantsToGrid()
 	{
+		final ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+	
 		HashMap<String, Object> args = new HashMap<String, Object>();
 		args.put("type", "usuario_evento_confirmado");
 		args.put("evento_id", evento.getId());
@@ -201,48 +203,15 @@ public class EventActivity extends Activity
 		
 		HttpWebRequest attendantsRequest = new HttpWebRequest(this, attendantsUrl)
 		{
-			
 			@Override
 			public void onSuccess(String paramString)
 			{
-				final ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
-				parsingUsuarios(listaUsuarios, paramString, new Runnable()
+				JSONArray arrayObj;
+				try
 				{
-					public void run()
-					{
-						GridLayout grid = (GridLayout) findViewById(R.id.grid_attendants);
-						
-						for (Usuario usuario : listaUsuarios)
-						{
-							ImageView imageView = new ImageView(getApplicationContext());
-							imageView.setLayoutParams(new LayoutParams(32, 32));
-							imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-							imageView.setPadding(5, 5, 5, 5);
-							imageView.setImageBitmap(usuario.getAvatar());
-							
-							grid.addView(imageView);
-						}
-					}
-				});
-
-			}
-		};
-		
-		attendantsRequest.execute();
-	}
-	
-	private void parsingUsuarios(final ArrayList<Usuario> listaUsuarios, String jsonString, final Runnable afterParsing)
-	{
-		try
-		{
-			final JSONArray arrayObj = new JSONArray(jsonString);
-
-			String urlRequest = usuario.getFotoPrefix() + "36x36" + usuario.getFotoSuffix();
-			HttpWebRequest webRequest = new HttpWebRequest(this, urlRequest, true)
-			{
-				@Override
-				public void onSuccess(Object objReceived)
-				{
+					GridLayout grid = (GridLayout) findViewById(R.id.grid_attendants);
+					arrayObj = new JSONArray(paramString);
+					
 					for (int i = 0; i < arrayObj.length(); i++)
 					{
 						try
@@ -254,9 +223,15 @@ public class EventActivity extends Activity
 							usuario.setNome(eventoJSONObj.getString("usuario.nome"));
 							usuario.setFotoPrefix(eventoJSONObj.getString("usuario.fotoPrefix"));
 							usuario.setFotoSuffix(eventoJSONObj.getString("usuario.fotoSuffix"));
+							usuario.setAvatarString64(eventoJSONObj.optString("usuario.avatar"));
 							
-							Bitmap avatar = (Bitmap) objReceived;
-							usuario.setAvatar(avatar);
+							ImageView imageView = new ImageView(getApplicationContext());
+							imageView.setLayoutParams(new LayoutParams(32, 32));
+							imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+							imageView.setPadding(5, 5, 5, 5);
+							imageView.setImageBitmap(usuario.getAvatar());
+							grid.addView(imageView);
+							
 							listaUsuarios.add(usuario);
 						}
 						catch (JSONException e)
@@ -264,17 +239,60 @@ public class EventActivity extends Activity
 							Log.e("Erro", "JSON", e);
 						}
 					}
-					
-					afterParsing.run();
+				} catch (JSONException e)
+				{
+					Log.e("JSON", "Get frineds attendants to event", e);
 				}
-			};
-			webRequest.execute();
-		} 
-		catch (JSONException e)
-		{
-			Log.e("Erro", "JSON", e);
-		}
+			}
+		};
+		
+		attendantsRequest.execute();
 	}
+	
+//	private void parsingUsuarios(final ArrayList<Usuario> listaUsuarios, String jsonString, final Runnable afterParsing)
+//	{
+//		try
+//		{
+//			final JSONArray arrayObj = new JSONArray(jsonString);
+//
+//			String urlRequest = usuario.getFotoPrefix() + "36x36" + usuario.getFotoSuffix();
+//			HttpWebRequest webRequest = new HttpWebRequest(this, urlRequest, true)
+//			{
+//				@Override
+//				public void onSuccess(Object objReceived)
+//				{
+//					for (int i = 0; i < arrayObj.length(); i++)
+//					{
+//						try
+//						{
+//							JSONObject eventoJSONObj = arrayObj.getJSONObject(i);
+//							
+//							Usuario usuario = new Usuario();
+//							usuario.setId_foursquare(eventoJSONObj.getInt("usuario.id_foursquare"));
+//							usuario.setNome(eventoJSONObj.getString("usuario.nome"));
+//							usuario.setFotoPrefix(eventoJSONObj.getString("usuario.fotoPrefix"));
+//							usuario.setFotoSuffix(eventoJSONObj.getString("usuario.fotoSuffix"));
+//							
+//							Bitmap avatar = (Bitmap) objReceived;
+//							usuario.setAvatar(avatar);
+//							listaUsuarios.add(usuario);
+//						}
+//						catch (JSONException e)
+//						{
+//							Log.e("Erro", "JSON", e);
+//						}
+//					}
+//					
+//					afterParsing.run();
+//				}
+//			};
+//			webRequest.execute();
+//		} 
+//		catch (JSONException e)
+//		{
+//			Log.e("Erro", "JSON", e);
+//		}
+//	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

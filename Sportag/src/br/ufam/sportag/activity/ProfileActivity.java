@@ -1,13 +1,16 @@
 package br.ufam.sportag.activity;
 
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 import br.ufam.sportag.R;
+import br.ufam.sportag.model.Usuario;
 
 public class ProfileActivity extends Activity {
+
+	private Usuario usuario;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -15,14 +18,15 @@ public class ProfileActivity extends Activity {
 		setContentView(R.layout.activity_profile);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
-		setFakeLabels();
+		usuario = (Usuario) getIntent().getSerializableExtra("usuario");
+		
+		fillContent();
 	}
 
-	private void setFakeLabels()
+	private void fillContent()
 	{
-		SharedPreferences strings = getSharedPreferences("strings", MODE_PRIVATE);
-		String firstName = strings.getString("userFirstName", "Unknow name");		
-		((TextView)findViewById(R.id.tv_profile_name)).setText(firstName);
+		((TextView)findViewById(R.id.tv_profile_name)).setText(usuario.getNome());
+		((ImageView) findViewById(R.id.img_profile_pic)).setImageBitmap(usuario.getAvatar());
 	}
 
 	@Override

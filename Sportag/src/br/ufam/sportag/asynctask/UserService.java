@@ -1,11 +1,11 @@
 
 package br.ufam.sportag.asynctask;
 
+import java.util.Date;
 import java.util.HashMap;
 import org.json.JSONException;
-import org.json.JSONObject;
 import android.content.Context;
-import android.graphics.Paint.Join;
+import android.text.format.DateFormat;
 import android.util.Log;
 import br.ufam.sportag.model.User;
 import br.ufam.sportag.model.Usuario;
@@ -31,7 +31,11 @@ public abstract class UserService
 	
 	public void startService()
 	{
-		String str = Util.selfDataRequestUrl + "?oauth_token=" + this.token + "&v=20140212";
+		HashMap<String, Object> args = new HashMap<String, Object>();
+		args.put("oauth_token", token);
+		args.put("v", DateFormat.format("yyyyMMdd", new Date()));
+		
+		String str = Util.selfDataRequestUrl + Util.dictionaryToString(args);
 		HttpWebRequest selfDataRequest = new HttpWebRequest(this.context, str)
 		{
 			public void onSuccess(String jsonResponseString)
@@ -68,12 +72,7 @@ public abstract class UserService
 		{
 			public void onSuccess(String response)
 			{
-				Usuario usuario = new Usuario();
-				usuario.setId_foursquare(userObj.getId());
-				usuario.setNome(userObj.getFirstName());
-				usuario.setFotoPrefix(userObj.getPhotoPrefix());
-				usuario.setFotoSuffix(userObj.getPhotoSuffix());
-				
+				Usuario usuario = Usuario.parseUser(userObj);
 				UserService.this.onSuccess(usuario);
 			}
 		};

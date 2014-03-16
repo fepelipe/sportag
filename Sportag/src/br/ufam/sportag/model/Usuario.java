@@ -2,8 +2,9 @@
 package br.ufam.sportag.model;
 
 import java.io.Serializable;
-
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 public class Usuario implements Serializable
 {
@@ -13,7 +14,7 @@ public class Usuario implements Serializable
 	private String fotoSuffix;
 	private double latitude;
 	private double longitude;
-	private Bitmap avatar;
+	private String avatarString64;
 	
 //	private ArrayList<Evento> listaEventosConfirmados;
 //	private ArrayList<Evento> listaEventosConvidado;
@@ -54,6 +55,16 @@ public class Usuario implements Serializable
 //	{
 //		this.listaEventosCheckin = listaEventosCheckin;
 //	}
+
+	public String getAvatarString64()
+	{
+		return avatarString64;
+	}
+
+	public void setAvatarString64(String avatarString64)
+	{
+		this.avatarString64 = avatarString64;
+	}
 
 	public int getId_foursquare()
 	{
@@ -115,12 +126,33 @@ public class Usuario implements Serializable
 		this.longitude = longitude;
 	}
 
-	public Bitmap getAvatar() {
-		return avatar;
+	public Bitmap getAvatar() 
+	{
+		return parseString64ToBitmap(avatarString64);
 	}
 
-	public void setAvatar(Bitmap avatar) {
-		this.avatar = avatar;
+	public static Bitmap parseString64ToBitmap(String imagebase64)
+	{
+		if(!imagebase64.equals(""))
+		{
+			byte[] decodedString = Base64.decode(imagebase64, Base64.DEFAULT);
+			return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+		}	
+		else
+		{
+			return null;
+		}
+	}
+
+	public static Usuario parseUser(User userObj)
+	{
+		Usuario usuario = new Usuario();
+		usuario.setId_foursquare(userObj.getId());
+		usuario.setNome(userObj.getFirstName());
+		usuario.setFotoPrefix(userObj.getPhotoPrefix());
+		usuario.setFotoSuffix(userObj.getPhotoSuffix());
+		
+		return usuario;
 	}
 	
 }

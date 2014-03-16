@@ -1,6 +1,9 @@
 package br.ufam.sportag.activity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
@@ -16,6 +19,7 @@ import br.ufam.sportag.R;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.asynctask.UserService;
 import br.ufam.sportag.model.Usuario;
+import br.ufam.sportag.util.Util;
 import com.foursquare.android.nativeoauth.FoursquareOAuth;
 import com.foursquare.android.nativeoauth.model.AuthCodeResponse;
 
@@ -116,7 +120,7 @@ public class MainActivity extends Activity  {
 		{
 			public void onSuccess(Usuario usuario)
 			{
-				MainActivity.this.usuario = usuario;
+				MainActivity.this.usuario = null;
 				registerSuccess(usuario);
 			}
 		};

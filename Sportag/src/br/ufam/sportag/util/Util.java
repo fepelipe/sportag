@@ -187,4 +187,17 @@ public class Util
 		
 		return bitmap;
 	}
+
+	public static String usersToJsonArray(ArrayList<User> listaUsers)
+	{
+		String response = "[";
+		for(User u : listaUsers)
+		{
+			response += u.getId();
+			if(listaUsers.indexOf(u) != listaUsers.size() - 1)
+				response += ",";
+		}
+		response += "]";
+		return response;
+	}
 }
