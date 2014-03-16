@@ -49,31 +49,23 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/spinner_sport"
             android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
-            android:text="Localização" />
+            android:text="Sem Localização" />
 
-        <AutoCompleteTextView
-            android:id="@+id/autocomplete_Location"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_set_location"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/tv_label_spinnerLocation"
-            android:ems="10"
-            android:hint="Ex.: Ponta Negra" >
-        </AutoCompleteTextView>
-
-        <Spinner
-            android:id="@+id/spinner_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/autocomplete_Location" />
+            android:onClick="callLocationDialog"
+            android:text="Setar Localização" />
 
         <TextView
             android:id="@+id/tv_label_spinnerPrivacy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/spinner_location"
+            android:layout_below="@+id/btn_set_location"
             android:layout_marginTop="@dimen/tv_eventCreationDetails_marginTop"
             android:text="Visibilidade" />
 

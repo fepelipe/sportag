@@ -8,9 +8,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +32,7 @@ import br.ufam.sportag.model.LocalizacaoEvento;
 import br.ufam.sportag.model.Usuario;
 import br.ufam.sportag.util.GeoCoordinate;
 import br.ufam.sportag.util.Util;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
@@ -259,7 +262,7 @@ public class MapActivity extends Activity
 				
 				userLocation = new LatLng(usuario.getLatitude(), usuario.getLongitude());
 				map.setMyLocationEnabled(true);
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 10));
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12));
 				map.addMarker(new MarkerOptions().title(usuario.getNome()).snippet("Usuário").position(userLocation));
 				
 				obterListaEventos();

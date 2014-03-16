@@ -33,7 +33,6 @@ public class EventCreationActivity extends Activity {
 	private TextView tvDate;
 	private TextView tvTime;
 	private Spinner sportsSpinner;
-	private Spinner locationSpinner;
 	private Spinner privacySpinner;
 	private EventDateDialog dateDialog;
 	private EventTimeDialog timeDialog;
@@ -51,7 +50,6 @@ public class EventCreationActivity extends Activity {
 
 		editEventName = (EditText) findViewById(R.id.edt_eventName);
 		sportsSpinner = (Spinner) findViewById(R.id.spinner_sport);
-		locationSpinner = (Spinner) findViewById(R.id.spinner_location);
 		privacySpinner = (Spinner) findViewById(R.id.spinner_privacy);
 
 		ArrayAdapter<CharSequence> sportsAdapter = ArrayAdapter
@@ -60,13 +58,6 @@ public class EventCreationActivity extends Activity {
 		sportsAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sportsSpinner.setAdapter(sportsAdapter);
-
-		ArrayAdapter<CharSequence> locationAdapter = ArrayAdapter
-				.createFromResource(this, R.array.fakeLocation_array,
-						android.R.layout.simple_spinner_item);
-		locationAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		locationSpinner.setAdapter(locationAdapter);
 
 		ArrayAdapter<CharSequence> privacyAdapter = ArrayAdapter
 				.createFromResource(this, R.array.privacy_array,
@@ -92,35 +83,35 @@ public class EventCreationActivity extends Activity {
 				tvTime.setText(timeText);
 			}
 		};
-
-		final AutoCompleteTextView autoCompleteLocation = (AutoCompleteTextView) findViewById(R.id.autocomplete_Location);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(null,
-				android.R.layout.simple_list_item_1, locationsArray);
-		autoCompleteLocation.setAdapter(adapter);
-		
-		autoCompleteLocation.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				HttpWebRequest locationsRequest = new HttpWebRequest(getApplicationContext(), Util.venuesRequestUrl) {
-					@Override
-					public void onSuccess(String stringReceived) {
-						locationsArray = null;
-						adapter.notifyDataSetChanged();
-					}
-				};
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-			}
-		});
+//
+//		final AutoCompleteTextView autoCompleteLocation = (AutoCompleteTextView) findViewById(R.id.autocomplete_Location);
+//		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(null,
+//				android.R.layout.simple_list_item_1, locationsArray);
+//		autoCompleteLocation.setAdapter(adapter);
+//		
+//		autoCompleteLocation.addTextChangedListener(new TextWatcher() {
+//
+//			@Override
+//			public void onTextChanged(CharSequence s, int start, int before,
+//					int count) {
+//				HttpWebRequest locationsRequest = new HttpWebRequest(getApplicationContext(), Util.venuesRequestUrl) {
+//					@Override
+//					public void onSuccess(String stringReceived) {
+//						locationsArray = null;
+//						adapter.notifyDataSetChanged();
+//					}
+//				};
+//			}
+//
+//			@Override
+//			public void afterTextChanged(Editable s) {
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence s, int start, int count,
+//					int after) {
+//			}
+//		});
 	}
 
 	@Override
