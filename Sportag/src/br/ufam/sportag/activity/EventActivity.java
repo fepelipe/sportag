@@ -2,6 +2,7 @@
 package br.ufam.sportag.activity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONArray;
@@ -9,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.format.DateFormat;
@@ -27,6 +29,7 @@ import br.ufam.sportag.R;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventInviteDialog;
 import br.ufam.sportag.model.Evento;
+import br.ufam.sportag.model.User;
 import br.ufam.sportag.model.Usuario;
 import br.ufam.sportag.util.Util;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -310,11 +313,110 @@ public class EventActivity extends Activity
 		startActivity(intent);
 	}
 	
+	private void obterListaAmigos()
+	{
+		SharedPreferences strings = getSharedPreferences("strings", MODE_PRIVATE);
+		String token = strings.getString("token", "0");
+		
+		HashMap<String, Object> args = new HashMap<String, Object>();
+		args.put("oauth_token", token);
+		args.put("v", DateFormat.format("yyyyMMdd", new Date()));
+		
+		String urlString = Util.selfDataRequestUrl + "/friends" + Util.dictionaryToString(args);
+		HttpWebRequest friendsRequest = new HttpWebRequest(this, urlString)
+		{
+			@Override
+			public void onSuccess(String stringReceived)
+			{
+				try
+				{
+					Util util = new Util();
+					ArrayList<User> listaUsers = util.getFriends(stringReceived);
+					getFriendsWhoHaveSportag(listaUsers);
+				} catch (JSONException e)
+				{
+					Log.e("JSON", "Parsing friends from JSON", e);
+				}
+				
+			}
+			
+			private void getFriendsWhoHaveSportag(ArrayList<User> listaUsers)
+			{
+				String listaUsersString = Util.usersToJsonArray(listaUsers);
+				
+				HashMap<String, Object> argsFriendsSportag = new HashMap<String, Object>();
+				argsFriendsSportag.put("type", "usuario");
+				argsFriendsSportag.put("ids", listaUsersString);
+				
+				String friendsSportagUrl = Util.searchUrl + Util.dictionaryToString(argsFriendsSportag);
+				HttpWebRequest friendsSportag = new HttpWebRequest(EventActivity.this, friendsSportagUrl)
+				{
+					@Override
+					public void onSuccess(String stringReceived)
+					{
+						JSONArray usersArray;
+						try
+						{
+							usersArray = new JSONArray(stringReceived);
+							final ArrayList<Usuario> listaUsuarios = new ArrayList<Usuario>();
+							for (int i = 0; i < usersArray.length(); i++)
+							{
+								JSONObject userObj = usersArray.getJSONObject(i);
+								
+								Usuario usuario = new Usuario();
+								usuario.setId_foursquare(userObj.getInt("usuario.id_foursquare"));
+								usuario.setNome(userObj.getString("usuario.nome"));
+								usuario.setFotoPrefix(userObj.getString("usuario.fotoPrefix"));
+								usuario.setFotoSuffix(userObj.getString("usuario.fotoSuffix"));
+								usuario.setAvatarString64(userObj.optString("usuario.avatar"));
+								listaUsuarios.add(usuario);
+							}
+							
+							EventInviteDialog inviteDialog = new EventInviteDialog(listaUsuarios)
+							{
+								public void onSelectedItem(int position) 
+								{
+									HashMap<String, Object> argsConvite = new HashMap<String, Object>();
+									argsConvite.put("type", "usuario_evento_convite");
+									argsConvite.put("evento_id", evento.getId());
+									argsConvite.put("usuario_id", listaUsuarios.get(position).getId_foursquare());
+									String urlConviteRequest = Util.addUrl + Util.dictionaryToString(argsConvite);
+									HttpWebRequest conviteRequest = new HttpWebRequest(EventActivity.this, urlConviteRequest)
+									{
+										public void onSuccess(String stringReceived) 
+										{
+											runOnUiThread(new Runnable(){
+												@Override
+												public void run()
+												{
+													Toast.makeText(getApplicationContext(), "O usuário foi convidado com sucesso!", Toast.LENGTH_SHORT).show();
+												}
+											});
+										};
+									};
+									conviteRequest.execute();
+								};
+							};
+							inviteDialog.show(getFragmentManager(), "event_invite");
+							
+						} catch (JSONException e)
+						{
+							Log.e("JSON", "Erro ao parsear lista de amigos que estão no Sportag", e);
+						}
+					}
+				};
+				
+				friendsSportag.execute();
+			}
+		};
+		
+		friendsRequest.execute();
+	}
+	
 	public void callEventInvitationDialog(View view)
 	{
 		// Chama a dialog de amigos que podem ser convidados para o evento
 		
-		EventInviteDialog inviteDialog = new EventInviteDialog();
-		inviteDialog.show(getFragmentManager(), "event_invite");
+		obterListaAmigos();
 	}
 }

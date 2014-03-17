@@ -2,9 +2,9 @@ package br.ufam.sportag.dialog;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import br.ufam.sportag.R;
-
+import br.ufam.sportag.model.Usuario;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -13,15 +13,33 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.os.Bundle;
 
+@SuppressLint("ValidFragment")
 public class EventInviteDialog extends DialogFragment {
 	ArrayList<Integer> mSelectedItems;
+	private ArrayList<Usuario> listaUsuarios;
+
+	public EventInviteDialog()
+	{
+		
+	}
+	
+	public void onSelectedItem(int position){} 
+	
+	public EventInviteDialog(ArrayList<Usuario> listaUsuarios)
+	{
+		this.listaUsuarios = listaUsuarios;
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		// Single choice
-		String[] friendsArray = getResources().getStringArray(
-				R.array.sports_array);
-		Arrays.sort(friendsArray);
+		ArrayList<String> friendsList = new ArrayList<String>();
+		String[] friendsArrays = new String[friendsList.size()];
+		
+		for(Usuario u : listaUsuarios)
+		{
+			friendsList.add(u.getNome());
+		}
 
 		mSelectedItems = new ArrayList();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -33,12 +51,11 @@ public class EventInviteDialog extends DialogFragment {
 
 					}
 				})
-				.setItems(friendsArray, new OnClickListener() {
+				.setItems(friendsList.toArray(friendsArrays), new OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						
+						onSelectedItem(which);						
 					}
 				});
 		return builder.create();
