@@ -1,7 +1,12 @@
 package br.ufam.sportag.activity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,6 +25,7 @@ import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventDateDialog;
 import br.ufam.sportag.dialog.EventLocationDialog;
 import br.ufam.sportag.dialog.EventTimeDialog;
+import br.ufam.sportag.model.Esporte;
 import br.ufam.sportag.model.Evento;
 import br.ufam.sportag.model.LocalizacaoEvento;
 import br.ufam.sportag.model.Usuario;
@@ -119,6 +125,7 @@ public class EventCreationActivity extends Activity {
 						String.valueOf(localizacaoEventoCriado.getLatitude()));
 				put("longitude",
 						String.valueOf(localizacaoEventoCriado.getLongitude()));
+				put("endereco", "Sem endereço");
 			}
 		};
 
@@ -130,11 +137,12 @@ public class EventCreationActivity extends Activity {
 
 			@Override
 			public void onSuccess(String locationString) {
-				JSONObject jsonObj;
 				try {
-					jsonObj = new JSONObject(locationString);
-					String locationId = jsonObj.optString("id");
-					Log.i("locationId", locationId);
+					JSONArray locationJSONArray = new JSONArray(locationString);
+					JSONObject jsonObj = locationJSONArray
+							.getJSONObject(0);
+					int locationId = jsonObj.optInt("localizacao_evento.id");
+					Log.i("locationId", String.valueOf(locationId));
 					callEventRequest(locationId);
 				} catch (JSONException jsonExcep) {
 					Log.e("Erro", "JSON", jsonExcep);
@@ -145,7 +153,7 @@ public class EventCreationActivity extends Activity {
 		createLocationRequest.execute();
 	}
 
-	protected void callEventRequest(final String locationId) {
+	protected void callEventRequest(final int locationId) {
 		// Construir timestamp no formato aceito pelo servidor
 		final String datahora = dateDialog.year + "-" + dateDialog.month + "-"
 				+ dateDialog.day + " " + timeDialog.hour + ":"
@@ -162,7 +170,7 @@ public class EventCreationActivity extends Activity {
 				put("dataHora", datahora);
 				put("localizacao_id", locationId);
 				put("esporte_id",
-						String.valueOf(sportsSpinner.getSelectedItemPosition()));
+						String.valueOf(sportsSpinner.getSelectedItemPosition() + 1));
 				put("criador_usuario_id", usuario.getId_foursquare());
 			}
 		};
@@ -174,15 +182,59 @@ public class EventCreationActivity extends Activity {
 
 			@Override
 			public void onSuccess(String successString) {
-				JSONObject jsonObj;
 				try {
-					jsonObj = new JSONObject(successString);
-					success = jsonObj.optString("success");
-					Log.i("Success", successString);
-					Log.i("Event Creation Success", success);
+					JSONArray eventosJSONArray = new JSONArray(successString);
+
+					final JSONObject eventoJSONObj = eventosJSONArray
+							.getJSONObject(0);
+
+					final Esporte esporte = new Esporte();
+					esporte.setId(eventoJSONObj.getInt("esporte.id"));
+					esporte.setNome(eventoJSONObj.getString("esporte.nome"));
+
+					final LocalizacaoEvento localizacao = new LocalizacaoEvento();
+					localizacao.setId(eventoJSONObj
+							.getInt("localizacao_evento.id"));
+					localizacao.setNomeLocal(eventoJSONObj
+							.getString("localizacao_evento.nomeLocal"));
+					localizacao.setLatitude(eventoJSONObj
+							.getDouble("localizacao_evento.latitude"));
+					localizacao.setLongitude(eventoJSONObj
+							.getDouble("localizacao_evento.longitude"));
+					localizacao.setEndereco(eventoJSONObj
+							.getString("localizacao_evento.endereco"));
+
+					final Usuario usuario = new Usuario();
+					usuario.setId_foursquare(eventoJSONObj
+							.getInt("usuario.id_foursquare"));
+					usuario.setNome(eventoJSONObj.getString("usuario.nome"));
+					usuario.setFotoPrefix(eventoJSONObj
+							.getString("usuario.fotoPrefix"));
+					usuario.setFotoSuffix(eventoJSONObj
+							.getString("usuario.fotoSuffix"));
+
+					Evento evento = new Evento();
+
+					String dataHora = eventoJSONObj
+							.optString("evento.dataHora");
+					SimpleDateFormat dateFormat = new SimpleDateFormat(
+							"yyyy-MM-dd kk:mm:ss", Locale.US);
+					final Date dataHoraObj = dateFormat.parse(dataHora);
+
+					evento.setId(eventoJSONObj.getInt("evento.id"));
+					evento.setNome(eventoJSONObj.getString("evento.nome"));
+					evento.setVisivel(eventoJSONObj.getInt("evento.visivel") == 1);
+					evento.setEsporte(esporte);
+					evento.setDataHora(dataHoraObj);
+					evento.setLocalizacaoEvento(localizacao);
+					evento.setCriador(usuario);
+
 					callDetailsActivity();
 				} catch (JSONException jsonExcep) {
 					Log.e("Erro", "JSON", jsonExcep);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		};
@@ -192,12 +244,10 @@ public class EventCreationActivity extends Activity {
 
 	// Chama os detalhes do evento que acabou de ser criado
 	private void callDetailsActivity() {
-		if (success == "true") {
 			Intent intent = new Intent(getApplicationContext(),
 					EventActivity.class);
 			intent.putExtra("evento", eventoCriado);
 			startActivity(intent);
 			this.finish();
-		}
 	}
 }

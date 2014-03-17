@@ -151,7 +151,7 @@ public class MapActivity extends Activity
 						localizacao.setNomeLocal(eventoJSONObj.getString("localizacao_evento.nomeLocal"));
 						localizacao.setLatitude(eventoJSONObj.getDouble("localizacao_evento.latitude"));
 						localizacao.setLongitude(eventoJSONObj.getDouble("localizacao_evento.longitude"));
-						localizacao.setEndereco(eventoJSONObj.getString("localizacao_evento.endereço"));
+						localizacao.setEndereco(eventoJSONObj.getString("localizacao_evento.endereco"));
 						
 						final Usuario usuario = new Usuario();
 						usuario.setId_foursquare(eventoJSONObj.getInt("usuario.id_foursquare"));

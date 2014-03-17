@@ -334,7 +334,7 @@ public class EventManagementActivity extends FragmentActivity implements
 					localizacao.setLongitude(eventoJSONObj
 							.getDouble("localizacao_evento.longitude"));
 					localizacao.setEndereco(eventoJSONObj
-							.getString("localizacao_evento.endereço"));
+							.getString("localizacao_evento.endereco"));
 
 					Usuario usuario = new Usuario();
 					usuario.setId_foursquare(eventoJSONObj
