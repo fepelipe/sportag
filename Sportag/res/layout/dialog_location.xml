@@ -9,7 +9,7 @@
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.6" />
+        android:layout_weight="2" />
 
     <ListView
         android:id="@+id/list_location_foursquare"

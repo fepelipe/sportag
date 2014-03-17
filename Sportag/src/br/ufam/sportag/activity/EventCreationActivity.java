@@ -36,6 +36,7 @@ public class EventCreationActivity extends Activity {
 	private EventTimeDialog timeDialog;
 	private EventLocationDialog locationDialog;
 	private Evento eventoCriado = new Evento();
+	private LocalizacaoEvento localizacaoEventoCriado = new LocalizacaoEvento();
 	static Usuario usuario;
 
 	@Override
@@ -83,7 +84,7 @@ public class EventCreationActivity extends Activity {
 		locationDialog = new EventLocationDialog() {
 			@Override
 			public void onLocationSelected(LocalizacaoEvento localizacaoEvento) {
-				
+				localizacaoEventoCriado = localizacaoEvento;
 			}
 		};
 	}
@@ -108,15 +109,43 @@ public class EventCreationActivity extends Activity {
 	}
 
 	public void createEvent(View view) {
+		HashMap<String, Object> argsLocation = new HashMap<String, Object>() {
+			{
+				put("type", "localizacao_evento");
+				put("nomeLocal", localizacaoEventoCriado.getNomeLocal());
+				put("latitude", String.valueOf(localizacaoEventoCriado.getLatitude()));
+				put("longitude", String.valueOf(localizacaoEventoCriado.getLongitude()));
+			}
+		};
+		
+		String createLocationUrl = Util.addUrl + Util.dictionaryToString(argsLocation);
+		
+		HttpWebRequest createLocationRequest = new HttpWebRequest(this,
+				createLocationUrl) {
+
+			@Override
+			public void onSuccess(String locationString) {
+				JSONObject jsonObj;
+				try {
+					jsonObj = new JSONObject(locationString);
+					String locationId = jsonObj.optString("id");
+					Log.i("locationId", locationId);
+					callEventRequest(locationId);
+				} catch (JSONException jsonExcep) {
+					Log.e("Erro", "JSON", jsonExcep);
+				}
+			}
+		};
+		
+		createLocationRequest.execute();
+	}
+
+	protected void callEventRequest(final String locationId) {
 		// Construir timestamp no formato aceito pelo servidor
 		final String datahora = dateDialog.year + "-" + dateDialog.month + "-"
 				+ dateDialog.day + " " + timeDialog.hour + ":"
 				+ timeDialog.minute + ":00";
 		Log.i("Evento DataHora", datahora);
-
-		// // TODO Tratamento de exceções (campos vazios)
-		// Toast.makeText(getApplicationContext(), "msg msg",
-		// Toast.LENGTH_SHORT).show();
 
 		// Construir URL de requisição para criação de evento no servidor
 		HashMap<String, Object> args = new HashMap<String, Object>() {
@@ -126,7 +155,7 @@ public class EventCreationActivity extends Activity {
 				put("visivel", String.valueOf(privacySpinner
 						.getSelectedItemPosition()));
 				put("dataHora", datahora);
-				put("localizacao_id", "1");
+				put("localizacao_id", locationId);
 				put("esporte_id",
 						String.valueOf(sportsSpinner.getSelectedItemPosition()));
 				put("criador_usuario_id", usuario.getId_foursquare());
@@ -153,6 +182,7 @@ public class EventCreationActivity extends Activity {
 			}
 		};
 		createEventRequest.execute();
+		
 	}
 
 	// Chama os detalhes do evento que acabou de ser criado

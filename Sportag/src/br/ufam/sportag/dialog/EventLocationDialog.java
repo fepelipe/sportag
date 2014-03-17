@@ -34,6 +34,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,7 +48,8 @@ public abstract class EventLocationDialog extends DialogFragment {
 	private HttpWebRequest locationsRequest;
 	private String token;
 	private ArrayList<LocalizacaoEvento> locationEventArray = new ArrayList<LocalizacaoEvento>();
-
+	private LatLng currentPosition;
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -67,9 +70,11 @@ public abstract class EventLocationDialog extends DialogFragment {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				onLocationSelected(locationEventArray.get(position));
-
+					int position, long id){
+				LocalizacaoEvento locationSelection = locationEventArray.get(position);
+				locationSelection.setLatitude(currentPosition.latitude);
+				locationSelection.setLongitude(currentPosition.longitude);
+				onLocationSelected(locationSelection);
 			}
 		});
 
@@ -81,8 +86,8 @@ public abstract class EventLocationDialog extends DialogFragment {
 
 			@Override
 			public void onMarkerDragEnd(Marker marker) {
-				LatLng position = marker.getPosition();
-				getNearestLocations(position.latitude, position.longitude,
+				currentPosition = marker.getPosition();
+				getNearestLocations(currentPosition.latitude, currentPosition.longitude,
 						token);
 			}
 
@@ -91,7 +96,7 @@ public abstract class EventLocationDialog extends DialogFragment {
 			}
 		});
 
-		addSelfMarker();
+		addLocationMarker();
 
 		builder.setView(view).setNegativeButton("Cancelar",
 				new OnClickListener() {
@@ -104,7 +109,7 @@ public abstract class EventLocationDialog extends DialogFragment {
 		return builder.create();
 	}
 
-	private void addSelfMarker() {
+	private void addLocationMarker() {
 		GeoCoordinate coordinates = new GeoCoordinate(getActivity()) {
 			public void onGPSSuccess(Location location) {
 				double userLongitude = location.getLongitude();
@@ -114,8 +119,11 @@ public abstract class EventLocationDialog extends DialogFragment {
 				map.setMyLocationEnabled(true);
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,
 						12));
-				map.addMarker(new MarkerOptions().position(userLocation)
-						.draggable(true));
+				map.addMarker(new MarkerOptions()
+						.position(userLocation)
+						.draggable(true)
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.icone_futebol)));
 
 				getNearestLocations(userLatitude, userLongitude, token);
 			}
@@ -146,6 +154,8 @@ public abstract class EventLocationDialog extends DialogFragment {
 		locationsRequest = new HttpWebRequest(getActivity(), locationsUrl) {
 			@Override
 			public void onSuccess(String stringReceived) {
+				locationStrings.clear();
+
 				try {
 					JSONObject root = new JSONObject(stringReceived);
 					JSONObject response = root.getJSONObject("response");
@@ -159,17 +169,19 @@ public abstract class EventLocationDialog extends DialogFragment {
 						final LocalizacaoEvento localizacao = new LocalizacaoEvento();
 						localizacao.setNomeLocal(locationObj.optString("name"));
 						Log.i("Location Name", locationObj.optString("name"));
-						
+
 						JSONObject location = locationObj
 								.getJSONObject("location");
 
-						localizacao.setEndereco(locationObj.optString("address"));
-						Log.i("Location Address", locationObj.optString("address"));
-						
+						localizacao.setEndereco(locationObj
+								.optString("address"));
+						Log.i("Location Address",
+								locationObj.optString("address"));
+
 						locationEventArray.add(localizacao);
 						locationStrings.add(locationObj.getString("name"));
 					}
-					
+
 					if (listLocation.getAdapter() == null) {
 						adapter = new ArrayAdapter<String>(getActivity(),
 								android.R.layout.simple_list_item_1,
