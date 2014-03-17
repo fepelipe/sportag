@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -156,20 +157,21 @@ public abstract class EventLocationDialog extends DialogFragment {
 								.getJSONObject(i);
 
 						final LocalizacaoEvento localizacao = new LocalizacaoEvento();
-						localizacao.setNomeLocal(locationObj.getString("name"));
-
+						localizacao.setNomeLocal(locationObj.optString("name"));
+						Log.i("Location Name", locationObj.optString("name"));
+						
 						JSONObject location = locationObj
 								.getJSONObject("location");
 
-						localizacao.setEndereco(location.getString("address"));
-
+						localizacao.setEndereco(locationObj.optString("address"));
+						Log.i("Location Address", locationObj.optString("address"));
+						
 						locationEventArray.add(localizacao);
 						locationStrings.add(locationObj.getString("name"));
-
 					}
 					
 					if (listLocation.getAdapter() == null) {
-						adapter = new ArrayAdapter<String>(null,
+						adapter = new ArrayAdapter<String>(getActivity(),
 								android.R.layout.simple_list_item_1,
 								locationStrings);
 						listLocation.setAdapter(adapter);

@@ -1,6 +1,5 @@
 package br.ufam.sportag.activity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.json.JSONException;
@@ -9,13 +8,10 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -40,8 +36,6 @@ public class EventCreationActivity extends Activity {
 	private EventTimeDialog timeDialog;
 	private EventLocationDialog locationDialog;
 	private Evento eventoCriado = new Evento();
-	private String[] locationsArray;
-
 	static Usuario usuario;
 
 	@Override
