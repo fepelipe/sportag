@@ -37,7 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public abstract class LocationDialog extends DialogFragment {
+public abstract class EventLocationDialog extends DialogFragment {
 	private GoogleMap map;
 	private ListView listLocation;
 	private ArrayAdapter<String> adapter;
@@ -53,28 +53,25 @@ public abstract class LocationDialog extends DialogFragment {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View view = inflater.inflate(R.layout.dialog_location, null);
 
-		SharedPreferences strings = getActivity().getSharedPreferences("token",
-				0);
+		SharedPreferences strings = getActivity().getSharedPreferences(
+				"strings", 0);
 		token = strings.getString("token", "");
 
 		map = ((MapFragment) getFragmentManager().findFragmentById(
-				R.id.map_fragment)).getMap();
+				R.id.location_fragment)).getMap();
 		listLocation = (ListView) view
 				.findViewById(R.id.list_location_foursquare);
 
-		adapter = new ArrayAdapter<String>(null,
-				android.R.layout.simple_list_item_1, locationStrings);
-		listLocation.setAdapter(adapter);
 		listLocation.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 				onLocationSelected(locationEventArray.get(position));
 
 			}
 		});
-		
+
 		map.setOnMarkerDragListener(new OnMarkerDragListener() {
 
 			@Override
@@ -148,9 +145,11 @@ public abstract class LocationDialog extends DialogFragment {
 		locationsRequest = new HttpWebRequest(getActivity(), locationsUrl) {
 			@Override
 			public void onSuccess(String stringReceived) {
-				JSONArray locationsJSONArray;
 				try {
-					locationsJSONArray = new JSONArray(stringReceived);
+					JSONObject root = new JSONObject(stringReceived);
+					JSONObject response = root.getJSONObject("response");
+					JSONArray locationsJSONArray = response
+							.getJSONArray("venues");
 
 					for (int i = 0; i < locationsJSONArray.length(); i++) {
 						final JSONObject locationObj = locationsJSONArray
@@ -158,12 +157,23 @@ public abstract class LocationDialog extends DialogFragment {
 
 						final LocalizacaoEvento localizacao = new LocalizacaoEvento();
 						localizacao.setNomeLocal(locationObj.getString("name"));
-						localizacao.setEndereco(locationObj
-								.getString("address"));
+
+						JSONObject location = locationObj
+								.getJSONObject("location");
+
+						localizacao.setEndereco(location.getString("address"));
 
 						locationEventArray.add(localizacao);
 						locationStrings.add(locationObj.getString("name"));
 
+					}
+					
+					if (listLocation.getAdapter() == null) {
+						adapter = new ArrayAdapter<String>(null,
+								android.R.layout.simple_list_item_1,
+								locationStrings);
+						listLocation.setAdapter(adapter);
+					} else {
 						adapter.notifyDataSetChanged();
 					}
 				} catch (JSONException e) {

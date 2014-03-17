@@ -22,8 +22,10 @@ import android.widget.TextView;
 import br.ufam.sportag.R;
 import br.ufam.sportag.asynctask.HttpWebRequest;
 import br.ufam.sportag.dialog.EventDateDialog;
+import br.ufam.sportag.dialog.EventLocationDialog;
 import br.ufam.sportag.dialog.EventTimeDialog;
 import br.ufam.sportag.model.Evento;
+import br.ufam.sportag.model.LocalizacaoEvento;
 import br.ufam.sportag.model.Usuario;
 import br.ufam.sportag.util.Util;
 
@@ -36,6 +38,7 @@ public class EventCreationActivity extends Activity {
 	private Spinner privacySpinner;
 	private EventDateDialog dateDialog;
 	private EventTimeDialog timeDialog;
+	private EventLocationDialog locationDialog;
 	private Evento eventoCriado = new Evento();
 	private String[] locationsArray;
 
@@ -83,35 +86,12 @@ public class EventCreationActivity extends Activity {
 				tvTime.setText(timeText);
 			}
 		};
-//
-//		final AutoCompleteTextView autoCompleteLocation = (AutoCompleteTextView) findViewById(R.id.autocomplete_Location);
-//		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(null,
-//				android.R.layout.simple_list_item_1, locationsArray);
-//		autoCompleteLocation.setAdapter(adapter);
-//		
-//		autoCompleteLocation.addTextChangedListener(new TextWatcher() {
-//
-//			@Override
-//			public void onTextChanged(CharSequence s, int start, int before,
-//					int count) {
-//				HttpWebRequest locationsRequest = new HttpWebRequest(getApplicationContext(), Util.venuesRequestUrl) {
-//					@Override
-//					public void onSuccess(String stringReceived) {
-//						locationsArray = null;
-//						adapter.notifyDataSetChanged();
-//					}
-//				};
-//			}
-//
-//			@Override
-//			public void afterTextChanged(Editable s) {
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence s, int start, int count,
-//					int after) {
-//			}
-//		});
+		locationDialog = new EventLocationDialog() {
+			@Override
+			public void onLocationSelected(LocalizacaoEvento localizacaoEvento) {
+				
+			}
+		};
 	}
 
 	@Override
@@ -120,7 +100,11 @@ public class EventCreationActivity extends Activity {
 		getMenuInflater().inflate(R.menu.event_creation, menu);
 		return true;
 	}
-
+	
+	public void callLocationDialog(View view){
+		locationDialog.show(getFragmentManager(), "locationMap");
+	}
+	
 	public void callDateDialog(View view) {
 		dateDialog.show(getFragmentManager(), "datePicker");
 	}
