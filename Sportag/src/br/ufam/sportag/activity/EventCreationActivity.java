@@ -229,6 +229,8 @@ public class EventCreationActivity extends Activity {
 					evento.setLocalizacaoEvento(localizacao);
 					evento.setCriador(usuario);
 
+					eventoCriado = evento;
+					
 					callDetailsActivity();
 				} catch (JSONException jsonExcep) {
 					Log.e("Erro", "JSON", jsonExcep);
@@ -246,6 +248,7 @@ public class EventCreationActivity extends Activity {
 	private void callDetailsActivity() {
 			Intent intent = new Intent(getApplicationContext(),
 					EventActivity.class);
+			intent.putExtras(getIntent().getExtras());
 			intent.putExtra("evento", eventoCriado);
 			startActivity(intent);
 			this.finish();
