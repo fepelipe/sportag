@@ -71,10 +71,12 @@ public abstract class EventLocationDialog extends DialogFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id){
+				Log.i("Item selecionado", "true");
 				LocalizacaoEvento locationSelection = locationEventArray.get(position);
 				locationSelection.setLatitude(currentPosition.latitude);
 				locationSelection.setLongitude(currentPosition.longitude);
 				onLocationSelected(locationSelection);
+				EventLocationDialog.this.dismiss();
 			}
 		});
 
@@ -125,7 +127,9 @@ public abstract class EventLocationDialog extends DialogFragment {
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.icone_futebol)));
 
+				currentPosition = new LatLng(userLatitude, userLongitude);
 				getNearestLocations(userLatitude, userLongitude, token);
+
 			}
 
 			@Override

@@ -85,6 +85,8 @@ public class EventCreationActivity extends Activity {
 			@Override
 			public void onLocationSelected(LocalizacaoEvento localizacaoEvento) {
 				localizacaoEventoCriado = localizacaoEvento;
+				((TextView) findViewById(R.id.tv_label_spinnerLocation))
+						.setText(localizacaoEventoCriado.getNomeLocal());
 			}
 		};
 	}
@@ -95,11 +97,11 @@ public class EventCreationActivity extends Activity {
 		getMenuInflater().inflate(R.menu.event_creation, menu);
 		return true;
 	}
-	
-	public void callLocationDialog(View view){
+
+	public void callLocationDialog(View view) {
 		locationDialog.show(getFragmentManager(), "locationMap");
 	}
-	
+
 	public void callDateDialog(View view) {
 		dateDialog.show(getFragmentManager(), "datePicker");
 	}
@@ -113,13 +115,16 @@ public class EventCreationActivity extends Activity {
 			{
 				put("type", "localizacao_evento");
 				put("nomeLocal", localizacaoEventoCriado.getNomeLocal());
-				put("latitude", String.valueOf(localizacaoEventoCriado.getLatitude()));
-				put("longitude", String.valueOf(localizacaoEventoCriado.getLongitude()));
+				put("latitude",
+						String.valueOf(localizacaoEventoCriado.getLatitude()));
+				put("longitude",
+						String.valueOf(localizacaoEventoCriado.getLongitude()));
 			}
 		};
-		
-		String createLocationUrl = Util.addUrl + Util.dictionaryToString(argsLocation);
-		
+
+		String createLocationUrl = Util.addUrl
+				+ Util.dictionaryToString(argsLocation);
+
 		HttpWebRequest createLocationRequest = new HttpWebRequest(this,
 				createLocationUrl) {
 
@@ -136,7 +141,7 @@ public class EventCreationActivity extends Activity {
 				}
 			}
 		};
-		
+
 		createLocationRequest.execute();
 	}
 
@@ -182,7 +187,7 @@ public class EventCreationActivity extends Activity {
 			}
 		};
 		createEventRequest.execute();
-		
+
 	}
 
 	// Chama os detalhes do evento que acabou de ser criado
@@ -190,7 +195,7 @@ public class EventCreationActivity extends Activity {
 		if (success == "true") {
 			Intent intent = new Intent(getApplicationContext(),
 					EventActivity.class);
-			intent.putExtra("eventTitle", eventoCriado);
+			intent.putExtra("evento", eventoCriado);
 			startActivity(intent);
 			this.finish();
 		}
